@@ -1,7 +1,9 @@
 
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
-export default function Cardapio() {
+
+
+export default function Cardapio({ navigation }) {
   return (
     <ScrollView style={styles.container}>
 
@@ -11,7 +13,7 @@ export default function Cardapio() {
 
       <Text style={styles.subtitulo}>
         Escolha sua pizza favorita
-      </Text>
+      </Text>                                    
 
     </ScrollView>
   );

@@ -46,7 +46,6 @@ _Em construção — _
 
 ## Documentos
 
-- [Matriz de papéis](docs/matriz-de-papeis.md)
 - [Uso de IA](USO_IA.md)
 
 ## Autoria

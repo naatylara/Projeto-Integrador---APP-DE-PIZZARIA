@@ -2,7 +2,7 @@
 
 ## Ferramentas utilizadas
 
-| Claude (Anthropic) | Planejamento, explicações e sugestões de código |
+| Claude  | Planejamento, explicações e sugestões de código |
 
 ## Regras que sigo
 

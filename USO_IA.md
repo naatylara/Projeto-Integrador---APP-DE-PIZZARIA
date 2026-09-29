@@ -2,7 +2,7 @@
 
 ## Ferramentas utilizadas
 
-| Claude (Anthropic) | Planejamento, explicações e sugestões de código |
+| Claude  | Planejamento, explicações e sugestões de código |
 
 ## Regras que sigo
 
@@ -15,4 +15,5 @@
 
 
 | 28/09/2026 | Claude | Plano de trabalho e checklist do projeto | Kanban e planejamento (`docs/`) | Comparei com o PDF do professor e ajustei ao meu escopo |
+
 | 28/09/2026 | Claude | Estrutura de pastas do projeto | Organização do repositório | Conferi com o que o professor pede |

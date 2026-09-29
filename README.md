@@ -46,7 +46,7 @@ _Em construção — _
 
 ## Documentos
 
-- [Kanban - https://trello.com/b/drFd5boT/projeto-integrador-app-de-pizzaria]
+- Kanban - https://trello.com/b/drFd5boT/projeto-integrador-app-de-pizzaria
 - [Uso de IA](USO_IA.md)
 
 ## Autoria

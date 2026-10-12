@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
@@ -17,6 +24,11 @@ const teclas = [
 export default function Pin({ navigation }) {
   const [pin, setPin] = useState('');
   const [erro, setErro] = useState(false);
+  const { height } = useWindowDimensions();
+
+  // O tamanho das teclas se ajusta à altura da tela (entre 52 e 74)
+  const tamanho = Math.max(52, Math.min(74, Math.floor((height - 300) / 5)));
+  const margem = 6;
 
   function digitar(valor) {
     if (valor === '*' || valor === '#') return;
@@ -45,8 +57,10 @@ export default function Pin({ navigation }) {
 
   return (
     <SafeAreaView style={estilos.tela}>
-      <View style={estilos.conteudo}>
-        <Ionicons name="lock-closed" size={110} color={cores.vermelho} />
+      <ScrollView
+        contentContainerStyle={estilos.conteudo}
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={estilos.titulo}>ACESSO RESTRITO</Text>
         <Text style={estilos.subtitulo}>Digite o PIN para continuar</Text>
 
@@ -60,11 +74,19 @@ export default function Pin({ navigation }) {
         </View>
         <Text style={estilos.erro}>{erro ? 'PIN incorreto' : ' '}</Text>
 
-        <View style={estilos.teclado}>
+        <View style={[estilos.teclado, { width: (tamanho + margem * 2) * 3 }]}>
           {teclas.map(([numero, letras]) => (
             <TouchableOpacity
               key={numero}
-              style={estilos.tecla}
+              style={[
+                estilos.tecla,
+                {
+                  width: tamanho,
+                  height: tamanho,
+                  borderRadius: tamanho / 2,
+                  margin: margem,
+                },
+              ]}
               onPress={() => digitar(numero)}
             >
               <Text style={estilos.teclaNumero}>{numero}</Text>
@@ -75,23 +97,28 @@ export default function Pin({ navigation }) {
 
         <View style={estilos.linhaAcoes}>
           <TouchableOpacity style={estilos.botaoVerde} onPress={confirmar}>
-            <Ionicons name="call" size={28} color={cores.branco} />
+            <Ionicons name="call" size={26} color={cores.branco} />
           </TouchableOpacity>
           <TouchableOpacity style={estilos.botaoApagar} onPress={apagar}>
             <Ionicons name="close" size={20} color={cores.texto} />
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const estilos = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
-  conteudo: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  titulo: { fontSize: 18, fontWeight: 'bold', marginTop: 12 },
+  conteudo: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+  },
+  titulo: { fontSize: 18, fontWeight: 'bold' },
   subtitulo: { fontSize: 14, color: cores.cinza, marginTop: 4 },
-  bolinhas: { flexDirection: 'row', gap: 12, marginTop: 16 },
+  bolinhas: { flexDirection: 'row', gap: 12, marginTop: 14 },
   bolinha: {
     width: 14,
     height: 14,
@@ -102,28 +129,23 @@ const estilos = StyleSheet.create({
   bolinhaCheia: { backgroundColor: cores.vermelho },
   erro: { color: cores.vermelho, fontSize: 12, marginTop: 6, height: 16 },
   teclado: {
-    width: 270,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: 6,
   },
   tecla: {
-    width: 74,
-    height: 74,
-    borderRadius: 37,
     backgroundColor: cores.cinzaClaro,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 8,
   },
-  teclaNumero: { fontSize: 28, color: cores.texto },
+  teclaNumero: { fontSize: 26, color: cores.texto },
   teclaLetras: { fontSize: 9, color: cores.texto, letterSpacing: 1 },
-  linhaAcoes: { flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 4 },
+  linhaAcoes: { flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 6 },
   botaoVerde: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: cores.verde,
     alignItems: 'center',
     justifyContent: 'center',

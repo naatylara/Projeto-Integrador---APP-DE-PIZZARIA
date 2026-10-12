@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Linking, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Linking, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
@@ -46,14 +46,23 @@ export default function AreaApoio({ navigation }) {
           <Ionicons name="arrow-back" size={26} color={cores.vermelho} />
         </TouchableOpacity>
         <Text style={estilos.titulo}>Área de Apoio</Text>
-        <Ionicons name="heart" size={40} color={cores.vermelho} style={{ marginLeft: 'auto' }} />
       </View>
 
       <View style={estilos.conteudo}>
-        <Text style={estilos.destaque}>Você não está sozinha</Text>
-        <Text style={estilos.texto}>
-          Aqui você encontra ajuda, orientações e canais de apoio.{'\n'}Sua segurança importa !!
-        </Text>
+        <View style={estilos.boasVindas}>
+          <View style={estilos.boasVindasTexto}>
+            <Text style={estilos.destaque}>Você não está sozinha</Text>
+            <Text style={estilos.texto}>
+              Aqui você encontra ajuda, orientações e canais de apoio.{'\n'}
+              Sua segurança importa !!
+            </Text>
+          </View>
+          <Image
+            source={require('../../assets/mascote-apoio.png')}
+            style={estilos.mascote}
+            resizeMode="contain"
+          />
+        </View>
 
         <View style={estilos.grade}>
           {cartoes.map((c) => (
@@ -72,7 +81,7 @@ export default function AreaApoio({ navigation }) {
           <Text style={estilos.botaoSairTexto}>SAIR RÁPIDO</Text>
         </TouchableOpacity>
 
-        <Text style={estilos.protótipo}>
+        <Text style={estilos.rodape}>
           Protótipo acadêmico. Não substitui atendimento policial, jurídico, psicológico ou de saúde real.
         </Text>
       </View>
@@ -91,7 +100,10 @@ const estilos = StyleSheet.create({
   },
   titulo: { fontSize: 20, fontWeight: '900', color: cores.vermelho, marginLeft: 14 },
   conteudo: { flex: 1, paddingHorizontal: 20 },
-  destaque: { fontSize: 18, fontWeight: 'bold', marginTop: 6 },
+  boasVindas: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  boasVindasTexto: { flex: 1, paddingRight: 10 },
+  mascote: { width: 90, height: 80 },
+  destaque: { fontSize: 18, fontWeight: 'bold' },
   texto: { fontSize: 13, fontWeight: 'bold', marginTop: 8, color: cores.texto },
   grade: {
     flexDirection: 'row',
@@ -123,5 +135,5 @@ const estilos = StyleSheet.create({
     marginTop: 24,
   },
   botaoSairTexto: { color: cores.branco, fontSize: 16, fontWeight: 'bold' },
-  protótipo: { fontSize: 10, color: cores.cinza, textAlign: 'center', marginTop: 16 },
+  rodape: { fontSize: 10, color: cores.cinza, textAlign: 'center', marginTop: 16 },
 });

@@ -2,6 +2,8 @@
 
 ## Ferramentas utilizadas
 
+| Ferramenta | Para que uso |
+|---|---|
 | Claude  | Planejamento, explicações e sugestões de código |
 | ChatGPT | Apoio nas etapas iniciais do projeto |
 
@@ -14,7 +16,8 @@
 
 ## Registro de usos
 
-
+| Data | Ferramenta | Como foi usada | Parte do projeto | Como revisei |
+|---|---|---|---|---|
 | 28/09/2026 | Claude | Plano de trabalho e checklist do projeto | Kanban e planejamento (`docs/`) | Comparei com o PDF do professor e ajustei ao meu escopo |
 
 | 28/09/2026 | Claude | Estrutura de pastas do projeto | Organização do repositório | Conferi com o que o professor pede |

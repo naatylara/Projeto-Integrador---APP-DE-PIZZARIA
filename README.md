@@ -8,7 +8,9 @@ Tema: *Violência contra a Mulher — App de Apoio Camuflado*.
 
 ## Canais de ajuda
 
-| Ligue 180 | **180** | Central de Atendimento à Mulher — 24h |
+| Canal | Número | Descrição |
+|---|---|---|
+| Ligue 180 | **180** | Central de Atendimento à Mulher, 24h |
 | Polícia Militar | **190** | Emergências |
 
 ## Sobre o projeto

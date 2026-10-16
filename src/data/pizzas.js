@@ -109,7 +109,7 @@ export const pizzas = [
     imagem: require('../../assets/pizzas/mem.jpg'),
   },
   {
-    id: 12,
+    id: 12, 
     nome: 'Prestígio',
     descricao: 'Chocolate ao leite coberto com coco ralado',
     preco: 44.9,

@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
 import Cabecalho from '../components/Cabecalho';
 
 export default function Ligar180({ navigation }) {
+  function ligar() {
+    Linking.openURL('tel:180').catch(() => {
+      Alert.alert('Não foi possível ligar', 'Disque 180 no seu telefone.');
+    });
+  }
+
   return (
     <SafeAreaView style={estilos.tela}>
       <Cabecalho titulo="Ligar 180" navigation={navigation} />
@@ -16,10 +22,7 @@ export default function Ligar180({ navigation }) {
         <Text style={estilos.central}>Central de Atendimento à Mulher</Text>
         <Text style={estilos.info}>Atendimento 24h, gratuito e sigiloso</Text>
 
-        <TouchableOpacity
-          style={estilos.botaoLigar}
-          onPress={() => Alert.alert('Ligar 180', 'No aparelho, aqui abriria o discador.')}
-        >
+        <TouchableOpacity style={estilos.botaoLigar} onPress={ligar}>
           <Text style={estilos.botaoLigarTexto}>LIGAR AGORA</Text>
         </TouchableOpacity>
 
@@ -35,7 +38,7 @@ const estilos = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
   conteudo: { flex: 1, alignItems: 'center', paddingHorizontal: 24, paddingTop: 30 },
   disque: { fontSize: 26, fontWeight: '900', color: cores.vermelho, marginTop: 16 },
-  central: { fontSize: 15, fontWeight: 'bold', marginTop: 20 },
+  central: { fontSize: 15, fontWeight: 'bold', marginTop: 20, textAlign: 'center' },
   info: { fontSize: 13, color: cores.cinza, textAlign: 'center', marginTop: 12 },
   botaoLigar: {
     backgroundColor: cores.vermelho,

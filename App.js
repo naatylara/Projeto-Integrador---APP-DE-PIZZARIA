@@ -12,6 +12,7 @@ import PedidoConfirmado from './src/screens/PedidoConfirmado';
 import Pin from './src/screens/Pin';
 import AreaApoio from './src/screens/AreaApoio';
 import Ligar180 from './src/screens/Ligar180';
+import Ligar190 from './src/screens/Ligar190';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
           <Stack.Screen name="Pin" component={Pin} />
           <Stack.Screen name="Apoio" component={AreaApoio} />
           <Stack.Screen name="Ligar180" component={Ligar180} />
+          <Stack.Screen name="Ligar190" component={Ligar190} />
         </Stack.Navigator>
       </NavigationContainer>
     </CarrinhoProvider>

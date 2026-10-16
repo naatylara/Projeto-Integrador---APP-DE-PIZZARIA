@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cores } from '../theme';
-import { tamanhos, precoUnitario } from '../data/pizzas';
+import { tamanhos, precoUnitario, formatarPreco } from '../data/pizzas';
 import { useCarrinho } from '../context/CarrinhoContext';
-import { formatarPreco } from '../utils/formatar';
 import Cabecalho from '../components/Cabecalho';
 import BarraInferior from '../components/BarraInferior';
 

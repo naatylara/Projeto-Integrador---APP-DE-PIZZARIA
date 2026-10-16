@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { cores } from '../theme';
-import { formatarPreco } from '../utils/formatar';
+import { formatarPreco } from '../data/pizzas';
 
 export default function PizzaCard({ pizza, onAdicionar, onPress, onLongPress }) {
   return (

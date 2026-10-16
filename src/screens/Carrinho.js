@@ -3,9 +3,8 @@ import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
-import { precoUnitario, pedacosDoTamanho, taxaEntrega } from '../data/pizzas';
+import { precoUnitario, pedacosDoTamanho, taxaEntrega, formatarPreco } from '../data/pizzas';
 import { useCarrinho } from '../context/CarrinhoContext';
-import { formatarPreco } from '../utils/formatar';
 import Cabecalho from '../components/Cabecalho';
 import BarraInferior from '../components/BarraInferior';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Alert, StyleSheet  } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
@@ -23,7 +23,7 @@ export default function AreaApoio({ navigation }) {
       titulo: 'LIGAR 190',
       texto: 'Polícia Militar (emergência)',
       icone: 'shield',
-      onPress: () => Alert.alert('Ligar 190', 'No aparelho, aqui abriria o discador.'),
+      onPress: () => navigation.navigate('Ligar190'),
     },
     {
       titulo: 'Rede de Contatos',

@@ -40,7 +40,7 @@ export const pizzas = [
     nome: 'Pepperoni',
     descricao: 'Molho de tomate, mussarela, requeijão e pepperoni',
     preco: 55.9,
-    categoria: '+ Pedidas',   // era 'Especiais'
+    categoria: '+ Pedidas',   
     imagem: require('../../assets/pizzas/pepperoni.png'),
   },
   {
@@ -65,7 +65,7 @@ export const pizzas = [
     nome: 'Quatro Queijos',
     descricao: 'Molho de tomate, mussarela, provolone, catupiry e gorgonzola',
     preco: 52.9,
-    categoria: '+ Pedidas',   // era 'Especiais'
+    categoria: '+ Pedidas',   
     imagem: require('../../assets/pizzas/quatroqueijos.png'),
   },
   {

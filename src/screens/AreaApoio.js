@@ -42,7 +42,7 @@ export default function AreaApoio({ navigation }) {
   return (
     <SafeAreaView style={estilos.tela}>
       <View style={estilos.cabecalho}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.popToTop()}>
           <Ionicons name="arrow-back" size={26} color={cores.vermelho} />
         </TouchableOpacity>
         <Text style={estilos.titulo}>Área de Apoio</Text>

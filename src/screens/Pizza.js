@@ -1,3 +1,13 @@
+// ============================================================
+// TELA 3 do protótipo da Entrega 1: "Escolha da Pizza" (Detalhes).
+//
+// Mostra a pizza escolhida no Cardápio e deixa escolher o tamanho e a
+// quantidade. O preço muda conforme o tamanho. O botão "Adicionar ao
+// Carrinho" guarda a escolha no carrinho e abre a tela do Carrinho.
+// ============================================================
+
+
+
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

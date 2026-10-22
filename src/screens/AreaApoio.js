@@ -1,3 +1,17 @@
+// ============================================================
+// TELA 10 do protótipo da Entrega 1: "Área de Apoio".
+//
+// É a área real do app, escondida atrás da fachada de pizzaria. Traz
+// os canais oficiais obrigatórios (Ligue 180 e 190), a rede de
+// contatos de confiança, o envio de localização e o botão "Sair
+// Rápido". Mostra também o aviso de que o app é um protótipo
+// acadêmico, como exige o documento do projeto.
+//
+// Rede de Contatos e Localização ainda mostram só um aviso (dados
+// simulados). A Rede de Contatos será o CRUD para Entrega 3.
+// ============================================================
+
+
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

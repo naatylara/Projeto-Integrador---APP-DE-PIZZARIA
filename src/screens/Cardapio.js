@@ -1,3 +1,15 @@
+// ============================================================
+// TELA 2 do protótipo da Entrega 1: "Cardápio".
+//
+// Lista as pizzas (dados simulados de data/pizzas.js) com filtro por
+// categoria e ícone do carrinho com a quantidade de itens.
+//
+// ATALHO OCULTO (mecanismo de entrada do disfarce): o toque curto em
+// uma pizza abre os Detalhes, como em qualquer app de pizzaria; o
+// toque LONGO (1,5 segundos) na pizza com a estrela abre a tela de PIN, que
+// leva à área de apoio. Nas demais pizzas, o toque longo não faz nada.
+// ============================================================
+
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,6 +22,7 @@ import BarraInferior from '../components/BarraInferior';
 import Cabecalho from '../components/Cabecalho';
 
 export default function Cardapio({ navigation }) {
+  // useState guarda o filtro ativo; ao mudar, a tela é redesenhada.
   const [categoria, setCategoria] = useState('Todas');
   const { adicionar, totalItens } = useCarrinho();
 
@@ -59,12 +72,15 @@ export default function Cardapio({ navigation }) {
             pizza={item}
             onAdicionar={() => adicionar(item)}
             onPress={() => navigation.navigate('Detalhes', { pizza: item })}
+            // Toque curto: abre os Detalhes e envia a pizza escolhida em { pizza }.
+            // Toque longo: só existe se item.especial for true; nas outras pizzas
+            // onLongPress é undefined e nada acontece (por isso o atalho não aparece).
             // Atalho oculto: toque longo na pizza especial abre a tela de PIN
             onLongPress={item.especial ? () => navigation.navigate('Pin') : undefined}
           />
         )}
       />
-
+      {/* Barra com Início, Cardápio e Pedidos (aba atual: Cardápio). */}
       <BarraInferior navigation={navigation} ativa="Cardapio" />
     </SafeAreaView>
   );

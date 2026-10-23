@@ -36,11 +36,14 @@ export default function Pin({ navigation }) {
     setPin(pin.slice(0, -1));
   }
 
-  function confirmar() {
-      if (pin === PIN_CORRETO) {
-    setPin('');
-    navigation.navigate('Apoio');
-   }
+    function confirmar() {
+    if (pin === PIN_CORRETO) {
+      setPin('');
+      navigation.navigate('Apoio');
+    } else {
+      setErro(true);
+      setPin('');
+    }
   }
 
   return (

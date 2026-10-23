@@ -1,3 +1,11 @@
+// ============================================================
+// TELA 9 do protótipo da Entrega 1: "Acesso Restrito" (tela de PIN).
+//
+// É a porta da área de apoio camuflada. Só se chega aqui pelo atalho
+// oculto do Cardápio (toque longo na pizza com a estrela). O teclado
+// imita o de um telefone e o botão verde confirma o PIN.
+// ============================================================
+
 import React, { useState } from 'react';
 import {  View,  Text,  TouchableOpacity,  ScrollView,  StyleSheet,} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,6 +15,7 @@ import { cores } from '../theme';
 // PIN fixo só para a Entrega 2. Na Entrega 4 virá do campo "pin" da tabela USUARIO (API).
 const PIN_CORRETO = '1234';
 
+// Teclas do teclado: [número, letras]. * e # aparecem só pelo visual.
 const teclas = [
   ['1', ''], ['2', 'ABC'], ['3', 'DEF'],
   ['4', 'GHI'], ['5', 'JKL'], ['6', 'MNO'],
@@ -15,11 +24,14 @@ const teclas = [
 ];
 
 export default function Pin({ navigation }) {
+  // Estados: os dígitos já digitados e se deve mostrar o aviso de erro.
   const [pin, setPin] = useState('');
   const [erro, setErro] = useState(false);
+  // Tamanho e espaçamento das teclas redondas.
   const tamanho = 64;
   const margem = 6;
 
+  // Acrescenta um dígito ao PIN (no máximo 4). * e # são ignorados.
   function digitar(valor) {
     if (valor === '*' || valor === '#') return;
     if (pin.length < 4) {
@@ -35,7 +47,8 @@ export default function Pin({ navigation }) {
     }
     setPin(pin.slice(0, -1));
   }
-
+    // Confere o PIN. Se estiver certo, limpa os dígitos (para a tela não
+    // ficar preenchida ao voltar) e abre a área de apoio.
     function confirmar() {
     if (pin === PIN_CORRETO) {
       setPin('');
@@ -48,13 +61,14 @@ export default function Pin({ navigation }) {
 
   return (
     <SafeAreaView style={estilos.tela}>
+      {/* ScrollView: se a janela for baixa, o teclado rola em vez de ficar cortado. */}
       <ScrollView
         contentContainerStyle={estilos.conteudo}
         showsVerticalScrollIndicator={false}
       >
         <Text style={estilos.titulo}>ACESSO RESTRITO</Text>
         <Text style={estilos.subtitulo}>Digite o PIN para continuar</Text>
-
+        {/* Quatro bolinhas: ficam preenchidas conforme os dígitos digitados. */}
         <View style={estilos.bolinhas}>
           {[0, 1, 2, 3].map((i) => (
             <View
@@ -64,7 +78,7 @@ export default function Pin({ navigation }) {
           ))}
         </View>
         <Text style={estilos.erro}>{erro ? 'PIN incorreto' : ' '}</Text>
-
+          {/* Teclado gerado com .map() a partir da lista "teclas". */}
         <View style={[estilos.teclado, { width: (tamanho + margem * 2) * 3 }]}>
           {teclas.map(([numero, letras]) => (
             <TouchableOpacity
@@ -85,7 +99,8 @@ export default function Pin({ navigation }) {
             </TouchableOpacity>
           ))}
         </View>
-
+          {/* Botão verde: confirma o PIN. Botão X: apaga um dígito; sem nenhum
+          dígito, volta para o Cardápio. */}
         <View style={estilos.linhaAcoes}>
           <TouchableOpacity style={estilos.botaoVerde} onPress={confirmar}>
             <Ionicons name="call" size={26} color={cores.branco} />

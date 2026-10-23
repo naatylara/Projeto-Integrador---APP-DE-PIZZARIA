@@ -19,13 +19,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
 
 export default function AreaApoio({ navigation }) {
+  // Mensagem exibida quando se toca em um recurso que ainda não existe.
   const [aviso, setAviso] = useState('');
 
-  // Saída rápida: limpa a pilha e volta direto para a fachada
+  // SAÍDA RÁPIDA: popToTop() fecha todas as telas empilhadas e volta direto
+  // para a primeira tela do Stack (a fachada), sem passar pelo PIN.
    function sairRapido() {
     navigation.popToTop();
   }
-
+  // Cartões da área de apoio. A lista é desenhada com .map() mais abaixo e
+  // cada cartão tem um onPress próprio.
   const cartoes = [
     {
       titulo: 'LIGAR 180',
@@ -43,6 +46,7 @@ export default function AreaApoio({ navigation }) {
       titulo: 'Rede de Contatos',
       texto: 'Pessoas de confiança',
       icone: 'people-outline',
+      // Por enquanto só mostra um aviso; vira o CRUD de contatos na Entrega 3.
       onPress: () => setAviso('Rede de Contatos: será ligada à API nas próximas entregas.'),
     },
     {
@@ -56,6 +60,8 @@ export default function AreaApoio({ navigation }) {
   return (
     <SafeAreaView style={estilos.tela}>
       <View style={estilos.cabecalho}>
+        {/* A seta também usa popToTop: voltar uma tela levaria de novo ao PIN,
+        o que revelaria a área restrita. */}
         <TouchableOpacity onPress={() => navigation.popToTop()}>
           <Ionicons name="arrow-back" size={26} color={cores.vermelho} />
         </TouchableOpacity>

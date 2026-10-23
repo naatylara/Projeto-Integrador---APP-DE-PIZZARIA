@@ -1,3 +1,10 @@
+// ============================================================
+// TELA 11 do protótipo da Entrega 1: "Ligar 180".
+//
+// Mostra o canal oficial (Central de Atendimento à Mulher) e o botão
+// "LIGAR AGORA", que abre o discador do celular já com o número 180.
+// ============================================================
+
 import React from 'react';
 import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,6 +13,9 @@ import { cores } from '../theme';
 import Cabecalho from '../components/Cabecalho';
 
 export default function Ligar180({ navigation }) {
+  // Linking.openURL("tel:180") pede ao celular para abrir o discador com
+  // o número. O app não liga sozinho: a pessoa ainda precisa tocar em
+  // ligar. O .catch avisa se não for possível (ex. no computador).
   function ligar() {
     Linking.openURL('tel:180').catch(() => {
       Alert.alert('Não foi possível ligar', 'Disque 180 no seu telefone.');

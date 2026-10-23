@@ -1,3 +1,11 @@
+// ============================================================
+// TELA 12 do protótipo da Entrega 1: "Ligar 190".
+//
+// Mostra o canal oficial (Central de Atendimento à Mulher) e o botão
+// "LIGAR AGORA", que abre o discador do celular já com o número 190.
+// ============================================================
+
+
 import React from 'react';
 import { View, Text, TouchableOpacity, Linking, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

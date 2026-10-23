@@ -1,3 +1,12 @@
+// ============================================================
+// TELA 4 do protótipo da Entrega 1: "Carrinho".
+//
+// Lista os itens escolhidos, permite mudar a quantidade ou remover, e
+// mostra subtotal, taxa de entrega e total. Os dados vêm do carrinho
+// compartilhado (context/CarrinhoContext.js). O botão "Finalizar
+// Pedido" só funciona se houver pelo menos um item.
+// ============================================================
+
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,8 +18,10 @@ import Cabecalho from '../components/Cabecalho';
 import BarraInferior from '../components/BarraInferior';
 
 export default function Carrinho({ navigation }) {
+  // Tudo o que a tela precisa do carrinho compartilhado.
   const { itens, alterarQuantidade, remover, limpar, subtotal, total } = useCarrinho();
 
+  // Lixeira do topo: esvazia o carrinho inteiro. Vai para o Cabecalho em "direita".
   const lixeira = (
     <TouchableOpacity onPress={limpar}>
       <Ionicons name="trash-outline" size={24} color={cores.vermelho} />
@@ -22,10 +33,12 @@ export default function Carrinho({ navigation }) {
       <Cabecalho titulo="Carrinho" navigation={navigation} direita={lixeira} />
 
       <ScrollView contentContainerStyle={estilos.conteudo}>
+        {/* Renderização condicional: com o carrinho vazio, mostra a mensagem. */}
         {itens.length === 0 && (
           <Text style={estilos.vazio}>Seu carrinho está vazio.</Text>
         )}
-
+        {/* Uma linha para cada item. A "key" junta o id da pizza e o tamanho,
+           porque a mesma pizza pode aparecer em dois tamanhos diferentes. */}
         {itens.map((item, indice) => (
           <View key={`${item.pizza.id}-${item.tamanho}`} style={estilos.item}>
             <View style={estilos.linhaTopo}>
@@ -60,6 +73,7 @@ export default function Carrinho({ navigation }) {
         ))}
       </ScrollView>
 
+      {/* Resumo dos valores: subtotal, taxa de entrega e total. */}
       <View style={estilos.resumo}>
         <View style={estilos.linhaResumo}>
           <Text>Subtotal</Text>
@@ -75,6 +89,7 @@ export default function Carrinho({ navigation }) {
         </View>
 
         <TouchableOpacity
+        // Com o carrinho vazio o botão fica apagado (opacity) e desativado (disabled).
           style={[estilos.botaoPrincipal, itens.length === 0 && { opacity: 0.5 }]}
           disabled={itens.length === 0}
           onPress={() => navigation.navigate('Finalizar')}
@@ -82,7 +97,7 @@ export default function Carrinho({ navigation }) {
           <Text style={estilos.botaoPrincipalTexto}>Finalizar Pedido</Text>
         </TouchableOpacity>
       </View>
-
+      {/* Aba atual: Pedidos. */}
       <BarraInferior navigation={navigation} ativa="Carrinho" />
     </SafeAreaView>
   );

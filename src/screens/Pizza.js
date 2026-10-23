@@ -18,11 +18,16 @@ import Cabecalho from '../components/Cabecalho';
 import BarraInferior from '../components/BarraInferior';
 
 export default function Pizza({ route, navigation }) {
+  // route.params traz o que o Cardápio enviou em navigate("Detalhes",
+  // { pizza: item }). A desestruturação pega só o campo "pizza".
   const { pizza } = route.params;
+  // Dois estados da tela: o tamanho escolhido e a quantidade.
   const [tamanho, setTamanho] = useState('Média');
   const [quantidade, setQuantidade] = useState(1);
+  // Função do carrinho compartilhado.
   const { adicionar } = useCarrinho();
 
+  // Guarda a pizza com o tamanho e a quantidade escolhidos e vai para o Carrinho.
   function adicionarAoCarrinho() {
     adicionar(pizza, tamanho, quantidade);
     navigation.navigate('Carrinho');
@@ -40,6 +45,8 @@ export default function Pizza({ route, navigation }) {
 
         <Text style={estilos.rotulo}>Tamanho:</Text>
         <View style={estilos.linhaTamanhos}>
+          {/* Um botão por tamanho (Média e Grande). O escolhido fica vermelho;
+              ao tocar, setTamanho muda o estado e o preço é recalculado. */}
           {tamanhos.map((t) => {
             const ativo = tamanho === t.nome;
             return (
@@ -57,7 +64,7 @@ export default function Pizza({ route, navigation }) {
             );
           })}
         </View>
-
+        {/* O botão + soma 1; o botão - diminui 1, mas nunca abaixo de 1 (Math.max). */}
         <Text style={estilos.rotulo}>Quantidade</Text>
         <View style={estilos.linhaQuantidade}>
           <TouchableOpacity

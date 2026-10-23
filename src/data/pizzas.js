@@ -13,27 +13,34 @@
 
 
 
-
+// Botões de filtro do Cardápio.
 export const categorias = ['Todas', '+ Pedidas', 'Especiais', 'Doces'];
 
+// Taxa de entrega fixa, somada ao subtotal do pedido.
 export const taxaEntrega = 10;
 
-
+// Tamanhos disponíveis. A Grande custa R$ 30 a mais que a Média.
 export const tamanhos = [
   { nome: 'Média', pedacos: 8, acrescimo: 0 },
   { nome: 'Grande', pedacos: 12, acrescimo: 30 },
 ];
 
+// Preço de UMA pizza no tamanho escolhido: preço base + acréscimo do tamanho.
+// .find() procura na lista "tamanhos" o item com o nome recebido.
 export function precoUnitario(pizza, nomeTamanho) {
   const t = tamanhos.find((x) => x.nome === nomeTamanho);
   return pizza.preco + (t ? t.acrescimo : 0);
 }
 
+// Quantos pedaços tem o tamanho escolhido (8 na Média, 12 na Grande).
 export function pedacosDoTamanho(nomeTamanho) {
   const t = tamanhos.find((x) => x.nome === nomeTamanho);
   return t ? t.pedacos : 0;
 }
 
+// Lista de pizzas. Cada item é um objeto com os dados que as telas mostram.
+// A "imagem" usa require() porque é um arquivo local da pasta assets.
+// "especial: true" marca a pizza que tem a estrela e o atalho oculto (Rúcula Especial).
 export const pizzas = [
   {
     id: 1,
@@ -134,6 +141,8 @@ export const pizzas = [
   },
 ];  
 
+// Transforma o número 45.9 no texto "R$45,90":
+// toFixed(2) deixa duas casas decimais e replace troca o ponto pela vírgula.
 export function formatarPreco(valor) {
   return 'R$' + valor.toFixed(2).replace('.', ',');
 }

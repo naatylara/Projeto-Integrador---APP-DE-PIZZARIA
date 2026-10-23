@@ -1,3 +1,19 @@
+// ============================================================
+// DADOS SIMULADOS do cardápio.
+//
+// Para entrega 2 os dados que está sendo usados são simulados. 
+// A API e o banco de dados reais só entram na Entrega 4, quando esta lista passa a vir do servidor.
+// As pizzas seguem a entidade PIZZA do DER da Entrega 1 (id, nome,
+// descrição e preço); categoria, imagem e "especial" são extras só
+// da tela.
+//
+// Também ficam aqui as regras de preço (taxa de entrega e acréscimo
+// por tamanho) e a função que formata o preço em reais.
+// ============================================================
+
+
+
+
 export const categorias = ['Todas', '+ Pedidas', 'Especiais', 'Doces'];
 
 export const taxaEntrega = 10;

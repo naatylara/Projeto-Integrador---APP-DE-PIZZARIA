@@ -1,3 +1,12 @@
+// ============================================================
+// TELA 5 do protótipo da Entrega 1: "Finalizar Pedido".
+//
+// Reúne endereço de entrega, forma de pagamento, observação e o
+// resumo dos valores. Os campos são controlados por useState: o que a
+// pessoa escolhe ou digita fica guardado no estado da tela. O botão
+// "Confirmar Pedido" leva à tela de pedido confirmado.
+// ============================================================
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,15 +16,22 @@ import { useCarrinho } from '../context/CarrinhoContext';
 import Cabecalho from '../components/Cabecalho';
 import BarraInferior from '../components/BarraInferior';
 
+// Opções de pagamento exibidas na tela.
+
 const formasPagamento = ['Cartão de Crédito', 'Pix', 'Dinheiro'];
 
 export default function FinalizarPedido({ navigation }) {
+  // Valores e funções do carrinho compartilhado.
   const { itens, subtotal, total, limpar } = useCarrinho();
+  // Estados da tela: endereço (valor inicial simulado), se está editando o
+  // endereço, forma de pagamento escolhida e observação digitada.
   const [endereco, setEndereco] = useState('Rua das Flores, nº 23\nJardim Rosa - Londrina/PR');
   const [editando, setEditando] = useState(false);
   const [pagamento, setPagamento] = useState('Cartão de Crédito');
   const [observacao, setObservacao] = useState('');
 
+  // Abre a tela de confirmação enviando o código do pedido (fixo, como no
+  // protótipo) e esvazia o carrinho. Na Entrega 4 o pedido será salvo na API.
    function confirmar() {
     navigation.navigate('Confirmado', { codigo: 6161 });
     limpar();
@@ -28,6 +44,7 @@ export default function FinalizarPedido({ navigation }) {
       <ScrollView contentContainerStyle={estilos.conteudo}>
         <Text style={estilos.rotulo}>Endereço de entrega:</Text>
         <View style={estilos.linhaEndereco}>
+          {/* Se está editando, mostra um campo de texto; senão, só o endereço. */}
           {editando ? (
             <TextInput
               style={estilos.inputEndereco}
@@ -46,6 +63,8 @@ export default function FinalizarPedido({ navigation }) {
         <View style={estilos.divisor} />
 
         <Text style={estilos.rotulo}>Forma de Pagamento:</Text>
+        {/* Opções de pagamento: o círculo (radio) é desenhado à mão e só a
+        opção igual ao estado "pagamento" aparece preenchida. */}
         {formasPagamento.map((forma) => (
           <TouchableOpacity
             key={forma}
@@ -60,7 +79,8 @@ export default function FinalizarPedido({ navigation }) {
         ))}
 
         <View style={estilos.divisor} />
-
+        {/* Campo de texto controlado: value e onChangeText ligam o que é
+        digitado ao estado "observacao". */}
         <Text style={estilos.rotulo}>Observação:</Text>
         <TextInput
           style={estilos.observacao}
@@ -87,6 +107,7 @@ export default function FinalizarPedido({ navigation }) {
         </View>
 
         <TouchableOpacity
+        // Sem itens no carrinho o botão fica apagado e desativado.
           style={[estilos.botaoPrincipal, itens.length === 0 && { opacity: 0.5 }]}
           disabled={itens.length === 0}
           onPress={confirmar}
@@ -94,7 +115,7 @@ export default function FinalizarPedido({ navigation }) {
           <Text style={estilos.botaoPrincipalTexto}>Confirmar Pedido</Text>
         </TouchableOpacity>
       </ScrollView>
-
+        {/* Aba atual: Pedidos. */}
       <BarraInferior navigation={navigation} ativa="Carrinho" />
     </SafeAreaView>
   );

@@ -30,7 +30,10 @@
 | 12/10/2026 | Claude | Novos sabores no cardápio (portuguesa, quatro queijos, banana com canela, chocolate) e organização das categorias | `src/data/pizzas.js` | Conferi os filtros do cardápio e defini os preços e categorias |
 | 12/10/2026 | Claude | Correção de erros: extensão `.JS` em maiúsculo, pasta `assets` fora do lugar, pacote `@expo/vector-icons` não instalado | Projeto Expo | Li as mensagens do terminal e corrigi até o app abrir |
 | 12/10/2026 | Claude | Configuração do Git e resolução de conflito de merge com o repositório antigo | Repositório GitHub | Mantive as versões novas das telas e confirmei o histórico no GitHub |
-
+| 12/10/2026 | Claude | Tela de PIN (`Pin.js`) criada por completo pela IA, a partir do protótipo da Entrega 1 (tela 9): teclado numérico, bolinhas do PIN, botão de confirmar e atalho vindo do toque longo no Cardápio | `src/screens/Pin.js` | Testei o toque longo, o PIN correto e o incorreto, e estudei cada função para conseguir explicar |
+| 12/10/2026 | Claude | Ajuste visual da tela de PIN: remoção do cadeado do topo e teclado adaptado à altura da tela, porque a tela aparecia cortada | `src/screens/Pin.js` | Conferi no navegador e no celular se o teclado e o botão verde aparecem inteiros |
+| 19/10/2026 | Claude | Correção da tela de PIN: ramo do PIN errado (aviso "PIN incorreto"), limpeza dos dígitos ao entrar e remoção de recursos que não foram vistos em aula | `src/screens/Pin.js` | Testei PIN certo e errado e a volta ao cardápio |
+| 23/10/2026 | Claude | Comentários explicativos escritos em todas as telas e componentes | `src/` | Li os comentários e ajustei o que não correspondia ao código |
 
 ## Observações
 
@@ -41,4 +44,3 @@ repositório e do Kanban.
 
 Pontos de atenção que já identifiquei:
 - O PIN (`1234`) é fixo apenas na Entrega 2. Na Entrega 4 ele virá da tabela USUARIO, pela API.
-- Os dados das pizzas são simulados e serão substituídos por chamadas à API.

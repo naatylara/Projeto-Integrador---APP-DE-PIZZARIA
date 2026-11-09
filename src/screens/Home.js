@@ -1,5 +1,12 @@
-import React from 'react';
+// ============================================================
+// TELA 1 do protótipo da Entrega 1: "Tela Inicial" da fachada.
+//
+// Mostra a marca "Pede Pizza Já", o mascote e o botão "Ver Cardápio".
+// É a primeira tela registrada no Stack (App.js), então é a que abre
+// junto com o app. Também é a tela para onde a saída rápida volta.
+// ============================================================
 
+import React from 'react';
 import {  View,  Text,  Image,  TouchableOpacity,  StyleSheet,} from 'react-native';
 import { cores } from '../theme';
 

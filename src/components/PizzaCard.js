@@ -1,3 +1,13 @@
+// ============================================================
+// COMPONENTE: card de uma pizza na lista do Cardápio.
+//
+// Props: "pizza" (os dados), "onAdicionar" (botão Adicionar),
+// "onPress" (toque curto) e "onLongPress" (toque longo). O card só
+// mostra os dados e avisa quem o usa; quem decide o que fazer em cada
+// toque é a tela do Cardápio.
+// ============================================================
+
+
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { cores } from '../theme';
@@ -8,6 +18,8 @@ export default function PizzaCard({ pizza, onAdicionar, onPress, onLongPress }) 
     <TouchableOpacity
       style={estilos.card}
       onPress={onPress}
+      // Toque longo: só faz algo na pizza especial (atalho oculto).
+      // delayLongPress define quanto tempo segurar: 1500 ms = 1,5 s.
       onLongPress={onLongPress}
       delayLongPress={1500}
       activeOpacity={0.8}
@@ -15,6 +27,7 @@ export default function PizzaCard({ pizza, onAdicionar, onPress, onLongPress }) 
       <Image source={pizza.imagem} style={estilos.imagem} />
       <View style={estilos.info}>
         <Text style={estilos.nome}>
+          {/* A estrela só aparece se a pizza tiver especial: true. */}
           {pizza.nome} {pizza.especial ? '⭐' : ''}
         </Text>
         <Text style={estilos.descricao}>{pizza.descricao}</Text>

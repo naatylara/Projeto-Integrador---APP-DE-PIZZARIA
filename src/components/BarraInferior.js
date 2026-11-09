@@ -1,8 +1,18 @@
+// ============================================================
+// COMPONENTE: barra inferior com Início, Cardápio e Pedidos
+// (as 3 abas do protótipo da Entrega 1).
+//
+// Recebe "navigation" (para trocar de tela) e "ativa" (a rota da tela
+// atual, que fica em negrito). É um componente reutilizável: as telas
+// só o colocam no final do layout.
+// ============================================================
+
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
 
+// As 3 abas: texto, nome da rota no App.js e ícone (Ionicons).
 const abas = [
   { nome: 'Início', rota: 'Inicio', icone: 'home-outline' },
   { nome: 'Cardápio', rota: 'Cardapio', icone: 'restaurant-outline' },
@@ -12,6 +22,7 @@ const abas = [
 export default function BarraInferior({ navigation, ativa }) {
   return (
     <View style={estilos.barra}>
+      {/* Gera um botão para cada aba da lista. */}
       {abas.map((aba) => (
         <TouchableOpacity
           key={aba.rota}

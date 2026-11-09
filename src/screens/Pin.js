@@ -1,3 +1,8 @@
+
+
+
+
+
 import React, { useState } from 'react';
 import {  View,  Text,  TouchableOpacity,  ScrollView,  StyleSheet,} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -30,9 +35,7 @@ export default function Pin({ navigation }) {
 
   function apagar() {
     if (pin.length === 0) {
-      navigation.goBack(); // X sem nada digitado volta para o cardápio
-      return;
-    }
+      navigation.goBack(); 
     setPin(pin.slice(0, -1));
   }
 
@@ -147,3 +150,4 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+}

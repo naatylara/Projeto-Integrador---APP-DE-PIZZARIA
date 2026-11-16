@@ -1,14 +1,14 @@
 // ============================================================
 // TELA 10 do protótipo da Entrega 1: "Área de Apoio".
 //
-// É a área real do app, escondida atrás da fachada de pizzaria. Traz
-// os canais oficiais obrigatórios (Ligue 180 e 190), a rede de
-// contatos de confiança, o envio de localização e o botão "Sair
-// Rápido". Mostra também o aviso de que o app é um protótipo
-// acadêmico, como exige o documento do projeto.
+// É a área real do app, escondida atrás da fachada de pizzaria.
+// Traz os canais oficiais obrigatórios (Ligue 180 e 190), a rede
+// de contatos de confiança, o envio de localização e o botão
+// "Sair Rápido". Mostra também o aviso de que o app é um
+// protótipo acadêmico, como exige o documento do projeto.
 //
-// Rede de Contatos e Localização ainda mostram só um aviso (dados
-// simulados). A Rede de Contatos será o CRUD para Entrega 3.
+// A Rede de Contatos possui um CRUD funcional da Entrega 3,
+// com dados temporários. A Localização ainda mostra um aviso.
 // ============================================================
 
 

@@ -1,3 +1,20 @@
+// ============================================================
+// TELA: "Rede de Contatos".
+//
+// Faz parte da Área de Apoio, escondida atrás da fachada de
+// pizzaria. Permite cadastrar, visualizar, editar e excluir
+// contatos de confiança, informando nome, telefone, relação
+// e prioridade.
+//
+// Utiliza useState para controlar os dados e o formulário,
+// além de permitir a saída rápida para a tela inicial.
+//
+// Na Entrega 3, os dados são temporários. Na Entrega 4,
+// serão integrados à API para armazenamento permanente.
+// ============================================================
+
+
+
 
 import React, { useState, useEffect } from 'react';
 import {   View,   Text,  TextInput,  TouchableOpacity,  FlatList,  Alert,  StyleSheet,  Platform,} from 'react-native';

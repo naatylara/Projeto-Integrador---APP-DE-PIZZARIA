@@ -65,6 +65,75 @@ app.get('/contatos', (req, res) => {
   }
 });
 
+ // ============================================================
+ // POST /contatos: cadastrar um contato de apoio.
+ //
+ // Recebe nome, telefone, relação, prioridade e usuarioId.
+ // Valida os campos e verifica se o usuário existe antes de
+ // gravar o novo contato no arquivo contatos.json.
+ // ============================================================
+
+app.post('/contatos', (req, res) => {
+  try {
+    const { nome, telefone, relacao, prioridade, usuarioId } = req.body;
+
+    // Verifica os campos obrigatórios.
+    if (
+      typeof nome !== 'string' || !nome.trim() ||
+      typeof telefone !== 'string' || !telefone.trim() ||
+      typeof relacao !== 'string' || !relacao.trim() ||
+      !Number.isInteger(prioridade) || prioridade < 1 ||
+      !Number.isInteger(usuarioId) || usuarioId < 1
+    ) {
+      return res.status(400).json({
+        erro: 'Preencha todos os campos com valores válidos.'
+      });
+    }
+
+    // Confirma que o usuário relacionado existe.
+    const usuarios = lerDados(ARQUIVO_USUARIOS);
+
+    const usuarioExiste = usuarios.some(
+      (usuario) => usuario.id === usuarioId
+    );
+
+    if (!usuarioExiste) {
+      return res.status(400).json({
+        erro: 'O usuário informado não existe.'
+      });
+    }
+
+    // Lê os contatos existentes e gera um novo ID.
+    const contatos = lerDados(ARQUIVO_CONTATOS);
+
+    const novoId = contatos.reduce(
+      (maior, contato) => Math.max(maior, contato.id),
+      0
+    ) + 1;
+
+    const novoContato = {
+      id: novoId,
+      nome: nome.trim(),
+      telefone: telefone.trim(),
+      relacao: relacao.trim(),
+      prioridade,
+      usuarioId
+    };
+
+    // Salva o novo contato permanentemente no arquivo JSON.
+    contatos.push(novoContato);
+    salvarDados(ARQUIVO_CONTATOS, contatos);
+
+    return res.status(201).json(novoContato);
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({
+      erro: 'Não foi possível cadastrar o contato.'
+    });
+  }
+});
+
+
 // Inicia o servidor na porta 3333.
 app.listen(PORTA, () => {
   console.log(`API funcionando na porta ${PORTA}`);

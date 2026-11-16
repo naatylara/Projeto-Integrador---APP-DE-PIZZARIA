@@ -51,6 +51,33 @@ app.get('/', (req, res) => {
   });
 });
 
+ // ============================================================
+ // GET /usuarios: consultar os usuários cadastrados.
+ //
+ // Lê o arquivo usuarios.json e retorna os usuários fictícios.
+ // Os contatos são vinculados aos usuários pelo usuarioId.
+ // ============================================================
+
+app.get('/usuarios', (req, res) => {
+  try {
+    const usuarios = lerDados(ARQUIVO_USUARIOS);
+
+    // Retorna somente informações não sensíveis.
+    const usuariosPublicos = usuarios.map((usuario) => ({
+      id: usuario.id,
+      nome: usuario.nome
+    }));
+
+    return res.json(usuariosPublicos);
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({
+      erro: 'Não foi possível consultar os usuários.'
+    });
+  }
+});
+
+
 // Lista todos os contatos cadastrados.
 app.get('/contatos', (req, res) => {
   try {

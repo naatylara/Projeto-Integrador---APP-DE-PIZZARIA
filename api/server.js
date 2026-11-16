@@ -133,7 +133,6 @@ app.post('/contatos', (req, res) => {
   }
 });
 
-
  // ============================================================
  // GET /contatos/:id: consultar um contato específico.
  //
@@ -171,6 +170,85 @@ app.get('/contatos/:id', (req, res) => {
     console.error(erro);
     return res.status(500).json({
       erro: 'Não foi possível consultar o contato.'
+    });
+  }
+});
+
+
+ // ============================================================
+ // PUT /contatos/:id: editar um contato de apoio.
+ //
+ // Recebe o ID pela URL e os novos dados pelo corpo da
+ // requisição. Valida os campos e o vínculo com o usuário
+ // antes de atualizar o arquivo contatos.json.
+ // ============================================================
+
+app.put('/contatos/:id', (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id < 1) {
+      return res.status(400).json({
+        erro: 'ID inválido.'
+      });
+    }
+
+    const contatos = lerDados(ARQUIVO_CONTATOS);
+    const indice = contatos.findIndex(
+      (contato) => contato.id === id
+    );
+
+    if (indice === -1) {
+      return res.status(404).json({
+        erro: 'Contato não encontrado.'
+      });
+    }
+
+    const { nome, telefone, relacao, prioridade, usuarioId } = req.body;
+
+    // Verifica se os novos dados são válidos.
+    if (
+      typeof nome !== 'string' || !nome.trim() ||
+      typeof telefone !== 'string' || !telefone.trim() ||
+      typeof relacao !== 'string' || !relacao.trim() ||
+      !Number.isInteger(prioridade) || prioridade < 1 ||
+      !Number.isInteger(usuarioId) || usuarioId < 1
+    ) {
+      return res.status(400).json({
+        erro: 'Preencha todos os campos com valores válidos.'
+      });
+    }
+
+    // Verifica se o usuário relacionado existe.
+    const usuarios = lerDados(ARQUIVO_USUARIOS);
+    const usuarioExiste = usuarios.some(
+      (usuario) => usuario.id === usuarioId
+    );
+
+    if (!usuarioExiste) {
+      return res.status(400).json({
+        erro: 'O usuário informado não existe.'
+      });
+    }
+
+    // Atualiza o contato mantendo o ID original.
+    const contatoAtualizado = {
+      id,
+      nome: nome.trim(),
+      telefone: telefone.trim(),
+      relacao: relacao.trim(),
+      prioridade,
+      usuarioId
+    };
+
+    contatos[indice] = contatoAtualizado;
+    salvarDados(ARQUIVO_CONTATOS, contatos);
+
+    return res.json(contatoAtualizado);
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({
+      erro: 'Não foi possível atualizar o contato.'
     });
   }
 });

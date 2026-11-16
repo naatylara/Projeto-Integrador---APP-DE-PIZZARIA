@@ -2,9 +2,9 @@
   {
     "id": 1,
     "nome": "Maria Silva",
-    "telefone": "43999999999",
+    "telefone": "43988887777",
     "relacao": "Amiga",
-    "prioridade": 1,
+    "prioridade": 2,
     "usuarioId": 1
   }
 ]

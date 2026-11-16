@@ -58,6 +58,7 @@ ou pressione `w` para abrir no navegador.
 - [Uso de IA](USO_IA.md)
 - [Matriz de papéis](docs/matriz-papeis.md)
 
+
 ## Autoria
 
 - NÁTALY LARA MORAES DA SILVA — Desenvolvimento Móvel

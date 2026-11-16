@@ -46,8 +46,7 @@ export default function AreaApoio({ navigation }) {
       titulo: 'Rede de Contatos',
       texto: 'Pessoas de confiança',
       icone: 'people-outline',
-      // Por enquanto só mostra um aviso; vira o CRUD de contatos na Entrega 3.
-      onPress: () => setAviso('Rede de Contatos: será ligada à API nas próximas entregas.'),
+      onPress: () => navigation.navigate('RedeApoio'),
     },
     {
       titulo: 'Localização',

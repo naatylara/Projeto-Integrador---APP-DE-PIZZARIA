@@ -28,6 +28,7 @@ import Pin from './src/screens/Pin';
 import AreaApoio from './src/screens/AreaApoio';
 import Ligar180 from './src/screens/Ligar180';
 import Ligar190 from './src/screens/Ligar190';
+import RedeContatos from './src/screens/RedeContatos';  
 
 
 // Cria o navegador em pilha: cada tela aberta fica empilhada sobre a
@@ -58,6 +59,7 @@ export default function App() {
           <Stack.Screen name="Apoio" component={AreaApoio} />
           <Stack.Screen name="Ligar180" component={Ligar180} />
           <Stack.Screen name="Ligar190" component={Ligar190} />
+          <Stack.Screen name="RedeApoio" component={RedeContatos} />  
         </Stack.Navigator>
       </NavigationContainer>
     </CarrinhoProvider>

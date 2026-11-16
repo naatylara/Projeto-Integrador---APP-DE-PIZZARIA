@@ -134,6 +134,48 @@ app.post('/contatos', (req, res) => {
 });
 
 
+ // ============================================================
+ // GET /contatos/:id: consultar um contato específico.
+ //
+ // Recebe o ID pela URL, procura o contato no arquivo JSON
+ // e retorna seus dados. Se não existir, retorna erro 404.
+ // ============================================================
+
+app.get('/contatos/:id', (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    // Verifica se o ID informado é válido.
+    if (!Number.isInteger(id) || id < 1) {
+      return res.status(400).json({
+        erro: 'ID inválido.'
+      });
+    }
+
+    // Consulta os contatos cadastrados.
+    const contatos = lerDados(ARQUIVO_CONTATOS);
+
+    // Procura o contato pelo ID.
+    const contato = contatos.find(
+      (item) => item.id === id
+    );
+
+    if (!contato) {
+      return res.status(404).json({
+        erro: 'Contato não encontrado.'
+      });
+    }
+
+    return res.json(contato);
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({
+      erro: 'Não foi possível consultar o contato.'
+    });
+  }
+});
+
+
 // Inicia o servidor na porta 3333.
 app.listen(PORTA, () => {
   console.log(`API funcionando na porta ${PORTA}`);

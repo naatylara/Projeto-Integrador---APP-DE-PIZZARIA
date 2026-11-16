@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import {   View,   Text,  TextInput,  TouchableOpacity,  FlatList,  Alert,  StyleSheet,} from 'react-native';
+import {   View,   Text,  TextInput,  TouchableOpacity,  FlatList,  Alert,  StyleSheet,  Platform,} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
@@ -92,7 +92,27 @@ export default function RedeApoio({ navigation }) {
     setPrioridade(String(contato.prioridade));
   }
 
-  function excluirContato(id) {
+  
+function excluirContato(id) {
+  function confirmarExclusao() {
+    setContatos((anteriores) =>
+      anteriores.filter((contato) => contato.id !== id)
+    );
+
+    if (editandoId === id) {
+      limparFormulario();
+    }
+  }
+
+  if (Platform.OS === 'web') {
+    const confirmou = window.confirm(
+      'Deseja realmente excluir este contato?'
+    );
+
+    if (confirmou) {
+      confirmarExclusao();
+    }
+  } else {
     Alert.alert(
       'Excluir contato',
       'Deseja realmente excluir este contato?',
@@ -104,21 +124,12 @@ export default function RedeApoio({ navigation }) {
         {
           text: 'Excluir',
           style: 'destructive',
-          onPress: () => {
-            setContatos((anteriores) =>
-              anteriores.filter(
-                (contato) => contato.id !== id
-              )
-            );
-
-            if (editandoId === id) {
-              limparFormulario();
-            }
-          },
+          onPress: confirmarExclusao,
         },
       ]
     );
   }
+}
 
   function sairRapido() {
     navigation.popToTop();

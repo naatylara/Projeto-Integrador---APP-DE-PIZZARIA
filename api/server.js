@@ -2,8 +2,7 @@
 // ENTREGA 4: API REST do aplicativo Pede Pizza Já.
 //
 // Utiliza Node.js e Express para receber requisições do app.
-// Os dados serão armazenados em arquivos JSON, seguindo o
-// modelo disponibilizado pelo professor (Hotel Aurora).
+// Os dados serão armazenados em arquivos JSON.
 // ============================================================
 
 const express = require('express');
@@ -21,8 +20,8 @@ const ARQUIVO_CONTATOS = path.join(__dirname, 'dados', 'contatos.json');
  // ============================================================
  // FUNÇÕES DE PERSISTÊNCIA DOS DADOS
  //
- // Lê e grava informações nos arquivos JSON, seguindo o
- // modelo utilizado na API Hotel Aurora do professor.
+ // Lê e grava informações nos arquivos JSON, 
+ // permitindo que o app funcione mesmo após ser fechado.
  // ============================================================
 
 function lerDados(caminhoArquivo) {
@@ -249,6 +248,59 @@ app.put('/contatos/:id', (req, res) => {
     console.error(erro);
     return res.status(500).json({
       erro: 'Não foi possível atualizar o contato.'
+    });
+  }
+});
+
+ // ============================================================
+ // DELETE /contatos/:id: excluir um contato de apoio.
+ //
+ // Recebe o ID pela URL, verifica se o contato existe e
+ // remove o registro do arquivo contatos.json.
+ // Retorna erro 404 caso o contato não seja encontrado.
+ // ============================================================
+
+app.delete('/contatos/:id', (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    // Verifica se o ID informado é válido.
+    if (!Number.isInteger(id) || id < 1) {
+      return res.status(400).json({
+        erro: 'ID inválido.'
+      });
+    }
+
+    // Consulta os contatos cadastrados.
+    const contatos = lerDados(ARQUIVO_CONTATOS);
+
+    // Procura o contato pelo ID.
+    const contato = contatos.find(
+      (item) => item.id === id
+    );
+
+    if (!contato) {
+      return res.status(404).json({
+        erro: 'Contato não encontrado.'
+      });
+    }
+
+    // Remove o contato da lista.
+    const contatosAtualizados = contatos.filter(
+      (item) => item.id !== id
+    );
+
+    // Salva a lista atualizada no arquivo JSON.
+    salvarDados(ARQUIVO_CONTATOS, contatosAtualizados);
+
+    return res.json({
+      mensagem: 'Contato excluído com sucesso.',
+      contatoExcluido: contato
+    });
+  } catch (erro) {
+    console.error(erro);
+    return res.status(500).json({
+      erro: 'Não foi possível excluir o contato.'
     });
   }
 });

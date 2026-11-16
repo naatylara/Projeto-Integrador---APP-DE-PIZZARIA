@@ -1,7 +1,7 @@
 // ============================================================
-// TELA 12 do protótipo da Entrega 1: "Ligar 190".
+//  "Ligar 190".
 //
-// Mostra o canal oficial (Central de Atendimento à Mulher) e o botão
+// Mostra o canal oficial (Central da Policia) e o botão
 // "LIGAR AGORA", que abre o discador do celular já com o número 190.
 // ============================================================
 

@@ -1,9 +1,13 @@
 // ============================================================
-// TELA 9 do protótipo da Entrega 1: "Acesso Restrito" (tela de PIN).
+// ACESSO RESTRITO
 //
-// É a porta da área de apoio camuflada. Só se chega aqui pelo atalho
-// oculto do Cardápio (toque longo na pizza com a estrela). O teclado
-// imita o de um telefone e o botão verde confirma o PIN.
+// Tela responsável por controlar o acesso à Área de Apoio.
+//
+// O acesso é realizado por meio de um teclado numérico,
+// disponível após o acionamento do atalho oculto no cardápio.
+//
+// O usuário deve informar um PIN de quatro dígitos.
+// Após a validação, a navegação é direcionada à Área de Apoio.
 // ============================================================
 
 import React, { useState } from 'react';
@@ -12,7 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
 
-// PIN fixo só para a Entrega 2. Na Entrega 4 virá do campo "pin" da tabela USUARIO (API).
+// Código de acesso utilizado para validar a entrada na Área de Apoio.
 const PIN_CORRETO = '1234';
 
 // Teclas do teclado: [número, letras]. * e # aparecem só pelo visual.
@@ -47,11 +51,11 @@ export default function Pin({ navigation }) {
     }
     setPin(pin.slice(0, -1));
   }
-    // Confere o PIN. Se estiver certo, limpa os dígitos (para a tela não
-    // ficar preenchida ao voltar) e abre a área de apoio.
+    // Valida o PIN informado e libera o acesso à Área de Apoio.
     function confirmar() {
     if (pin === PIN_CORRETO) {
       setPin('');
+      setErro(false);
       navigation.navigate('Apoio');
     } else {
       setErro(true);
@@ -102,8 +106,15 @@ export default function Pin({ navigation }) {
           {/* Botão verde: confirma o PIN. Botão X: apaga um dígito; sem nenhum
           dígito, volta para o Cardápio. */}
         <View style={estilos.linhaAcoes}>
-          <TouchableOpacity style={estilos.botaoVerde} onPress={confirmar}>
-            <Ionicons name="call" size={26} color={cores.branco} />
+          <TouchableOpacity
+            style={[
+              estilos.botaoVerde,
+              pin.length !== 4 && { opacity: 0.5 },
+            ]}
+            onPress={confirmar}
+            disabled={pin.length !== 4}   
+          >
+          <Ionicons name="call" size={26} color={cores.branco} />
           </TouchableOpacity>
           <TouchableOpacity style={estilos.botaoApagar} onPress={apagar}>
             <Ionicons name="close" size={20} color={cores.texto} />

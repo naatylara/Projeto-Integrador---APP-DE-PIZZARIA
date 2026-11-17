@@ -1,14 +1,21 @@
 // ============================================================
-// TELA 4 do protótipo da Entrega 1: "Carrinho".
+// CARRINHO DE COMPRAS
 //
-// Lista os itens escolhidos, permite mudar a quantidade ou remover, e
-// mostra subtotal, taxa de entrega e total. Os dados vêm do carrinho
-// compartilhado (context/CarrinhoContext.js). O botão "Finalizar
-// Pedido" só funciona se houver pelo menos um item.
+// Exibe os produtos selecionados, incluindo tamanho,
+// quantidade e preço de cada item.
+//
+// Permite alterar quantidades, remover produtos e esvaziar
+// o carrinho.
+//
+// Apresenta o subtotal, a taxa de entrega e o valor total,
+// utilizando os dados compartilhados pelo CarrinhoContext.
+//
+// O usuário pode avançar para a finalização do pedido
+// quando houver produtos no carrinho.
 // ============================================================
 
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
@@ -21,9 +28,30 @@ export default function Carrinho({ navigation }) {
   // Tudo o que a tela precisa do carrinho compartilhado.
   const { itens, alterarQuantidade, remover, limpar, subtotal, total } = useCarrinho();
 
+
+function confirmarLimpeza() {
+  if (itens.length === 0) return;
+
+  if (Platform.OS === 'web') {
+    if (window.confirm('Deseja esvaziar o carrinho?')) {
+      limpar();
+    }
+    return;
+  }
+
+  Alert.alert(
+    'Esvaziar carrinho',
+    'Deseja remover todos os produtos do carrinho?',
+    [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Esvaziar', style: 'destructive', onPress: limpar },
+    ]
+  );
+}
+
   // Lixeira do topo: esvazia o carrinho inteiro. Vai para o Cabecalho em "direita".
   const lixeira = (
-    <TouchableOpacity onPress={limpar}>
+    <TouchableOpacity onPress={confirmarLimpeza}>
       <Ionicons name="trash-outline" size={24} color={cores.vermelho} />
     </TouchableOpacity>
   );
@@ -48,7 +76,9 @@ export default function Carrinho({ navigation }) {
                 <Text style={estilos.detalhe}>
                   {item.tamanho} - {pedacosDoTamanho(item.tamanho)} pedaços
                 </Text>
-                <Text style={estilos.detalhe}>{item.quantidade} und</Text>
+                <Text style={estilos.detalhe}>
+                  {item.quantidade} {item.quantidade === 1 ? 'unidade' : 'unidades'}
+                </Text>
                 <Text style={estilos.preco}>
                   {formatarPreco(precoUnitario(item.pizza, item.tamanho) * item.quantidade)}
                 </Text>
@@ -56,17 +86,33 @@ export default function Carrinho({ navigation }) {
             </View>
 
             <View style={estilos.linhaQtd}>
-              <TouchableOpacity style={estilos.botaoQtd} onPress={() => alterarQuantidade(indice, 1)}>
-                <Text style={estilos.textoQtd}>+</Text>
+              <TouchableOpacity
+                style={estilos.botaoQtd}
+                onPress={() => alterarQuantidade(indice, -1)}
+              >
+                <Text style={estilos.textoQtd}>-</Text>
               </TouchableOpacity>
+
+              {/* Quantidade selecionada */}
               <View style={estilos.visorQtd}>
                 <Text style={estilos.textoQtd}>{item.quantidade}</Text>
               </View>
-              <TouchableOpacity style={estilos.botaoQtd} onPress={() => alterarQuantidade(indice, -1)}>
-                <Text style={estilos.textoQtd}>-</Text>
+
+              {/* Aumentar quantidade */}
+              <TouchableOpacity
+                style={estilos.botaoQtd}
+                onPress={() => alterarQuantidade(indice, 1)}
+              >
+                <Text style={estilos.textoQtd}>+</Text>
               </TouchableOpacity>
+
+              {/* Remover produto */}
               <TouchableOpacity onPress={() => remover(indice)}>
-                <Ionicons name="trash-outline" size={26} color={cores.vermelho} />
+                <Ionicons
+                  name="trash-outline"
+                  size={26}
+                  color={cores.vermelho}
+                />
               </TouchableOpacity>
             </View>
           </View>

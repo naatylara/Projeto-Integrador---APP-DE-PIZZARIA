@@ -1,8 +1,11 @@
 // ============================================================
-// TELA 6 do protótipo da Entrega 1: "Pedido Confirmado".
+//  PEDIDO CONFIRMADO
 //
-// Última tela do fluxo da fachada. Mostra o código do pedido e a
-// previsão de entrega (valores simulados).
+// Tela responsável por apresentar a confirmação do pedido,
+// exibindo o número de identificação e a previsão de entrega.
+//
+// Finaliza o fluxo de compra da pizzaria e permite que
+// o usuário continue navegando pelo aplicativo.
 // ============================================================
 
 import React from 'react';
@@ -13,9 +16,8 @@ import { cores } from '../theme';
 import BarraInferior from '../components/BarraInferior';
 
 export default function PedidoConfirmado({ route, navigation }) {
-  // route.params traz o código enviado pela tela Finalizar Pedido em
-  // navigate("Confirmado", { codigo: 6161 }).
-   const { codigo } = route.params;
+  // Recupera o código do pedido enviado pela tela de finalização.
+  const { codigo } = route.params;
 
   return (
     <SafeAreaView style={estilos.tela}>

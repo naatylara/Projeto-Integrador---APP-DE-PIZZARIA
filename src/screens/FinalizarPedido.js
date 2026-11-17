@@ -1,14 +1,18 @@
 // ============================================================
-// TELA 5 do protótipo da Entrega 1: "Finalizar Pedido".
+// FINALIZAÇÃO DO PEDIDO
 //
-// Reúne endereço de entrega, forma de pagamento, observação e o
-// resumo dos valores. Os campos são controlados por useState: o que a
-// pessoa escolhe ou digita fica guardado no estado da tela. O botão
-// "Confirmar Pedido" leva à tela de pedido confirmado.
+// Permite revisar os valores da compra, informar o endereço
+// de entrega, selecionar a forma de pagamento e adicionar
+// observações ao pedido.
+//
+// Os dados preenchidos são gerenciados pelos estados da tela.
+//
+// Após a confirmação, o usuário é direcionado para a tela
+// de acompanhamento e confirmação do pedido.
 // ============================================================
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import {  View,  Text,  TextInput,  TouchableOpacity,  ScrollView,  StyleSheet,  Alert,  Platform,} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cores } from '../theme';
 import { taxaEntrega, formatarPreco } from '../data/pizzas';
@@ -23,16 +27,27 @@ const formasPagamento = ['Cartão de Crédito', 'Pix', 'Dinheiro'];
 export default function FinalizarPedido({ navigation }) {
   // Valores e funções do carrinho compartilhado.
   const { itens, subtotal, total, limpar } = useCarrinho();
-  // Estados da tela: endereço (valor inicial simulado), se está editando o
-  // endereço, forma de pagamento escolhida e observação digitada.
-  const [endereco, setEndereco] = useState('Rua das Flores, nº 23\nJardim Rosa - Londrina/PR');
-  const [editando, setEditando] = useState(false);
+  const [endereco, setEndereco] = useState('');
+  const [editando, setEditando] = useState(true);
   const [pagamento, setPagamento] = useState('Cartão de Crédito');
   const [observacao, setObservacao] = useState('');
 
-  // Abre a tela de confirmação enviando o código do pedido (fixo, como no
-  // protótipo) e esvazia o carrinho. Na Entrega 4 o pedido será salvo na API.
+
+  // Finaliza o fluxo de compra da pizzaria, 
+  // exibe a confirmação do pedido e limpa o carrinho. 
    function confirmar() {
+    if (!endereco.trim()) {
+      const mensagem = 'Informe o endereço de entrega antes de confirmar o pedido.';
+
+      if (Platform.OS === 'web') {
+        window.alert(mensagem);
+      } else {
+        Alert.alert('Endereço obrigatório', mensagem);
+      }
+
+      return;
+    }
+
     navigation.navigate('Confirmado', { codigo: 6161 });
     limpar();
   }
@@ -46,10 +61,12 @@ export default function FinalizarPedido({ navigation }) {
         <View style={estilos.linhaEndereco}>
           {/* Se está editando, mostra um campo de texto; senão, só o endereço. */}
           {editando ? (
-            <TextInput
+           <TextInput
               style={estilos.inputEndereco}
               value={endereco}
               onChangeText={setEndereco}
+              placeholder="Digite seu endereço completo"
+              placeholderTextColor={cores.cinza}
               multiline
             />
           ) : (

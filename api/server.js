@@ -15,6 +15,7 @@ const PORTA = 3333;
 // Caminhos dos arquivos utilizados para persistência.
 const ARQUIVO_USUARIOS = path.join(__dirname, 'dados', 'usuarios.json');
 const ARQUIVO_CONTATOS = path.join(__dirname, 'dados', 'contatos.json');
+const ARQUIVO_ALERTAS = path.join(__dirname, 'dados', 'alertas.json');
 
 
  // ============================================================
@@ -332,6 +333,185 @@ app.delete('/contatos/:id', (req, res) => {
   }
 });
 
+
+ // ============================================================
+ // ENTREGA 4 - ALERTAS SOS
+ //
+ // POST /alertas: registra um acionamento SOS fictício.
+ // GET /alertas: consulta os alertas cadastrados.
+ //
+ // Cada alerta pertence a um usuário existente.
+ // Os dados são salvos em alertas.json.
+ // ============================================================
+
+
+// ============================================================
+// POST /alertas - CADASTRAR ALERTA SOS
+// ============================================================
+
+app.post('/alertas', (req, res) => {
+  try {
+    const { usuarioId, latitude, longitude } = req.body;
+
+    // Verifica se o usuário e as coordenadas são válidos.
+    if (
+      !Number.isInteger(usuarioId) ||
+      usuarioId < 1 ||
+      typeof latitude !== 'number' ||
+      !Number.isFinite(latitude) ||
+      latitude < -90 ||
+      latitude > 90 ||
+      typeof longitude !== 'number' ||
+      !Number.isFinite(longitude) ||
+      longitude < -180 ||
+      longitude > 180
+    ) {
+      return res.status(400).json({
+        erro: 'Informe usuário e localização válidos.'
+      });
+    }
+
+    // Confirma que o usuário existe.
+    const usuarios = lerDados(ARQUIVO_USUARIOS);
+
+    const usuario = usuarios.find(
+      (item) => item.id === usuarioId
+    );
+
+    if (!usuario) {
+      return res.status(404).json({
+        erro: 'Usuário não encontrado.'
+      });
+    }
+
+    // Consulta os alertas já cadastrados.
+    const alertas = lerDados(ARQUIVO_ALERTAS);
+
+    // Gera um ID único dentro do arquivo.
+    const novoId = alertas.reduce(
+      (maior, alerta) => Math.max(maior, alerta.id),
+      0
+    ) + 1;
+
+    // Cria o alerta com data e hora automáticas.
+    const novoAlerta = {
+      id: novoId,
+      usuarioId: usuario.id,
+      nomeUsuario: usuario.nome,
+      dataHora: new Date().toISOString(),
+      latitude,
+      longitude,
+      status: 'Novo'
+    };
+
+    // Salva o alerta no arquivo JSON.
+    alertas.push(novoAlerta);
+    salvarDados(ARQUIVO_ALERTAS, alertas);
+
+    return res.status(201).json(novoAlerta);
+
+  } catch (erro) {
+    console.error('Erro ao registrar SOS:', erro);
+
+    return res.status(500).json({
+      erro: 'Não foi possível registrar o alerta SOS.'
+    });
+  }
+});
+
+
+// ============================================================
+// GET /alertas - LISTAR ALERTAS SOS
+//
+// Retorna os alertas mais recentes primeiro.
+// Essa rota será utilizada pelo Dashboard da Delegacia.
+// ============================================================
+
+app.get('/alertas', (req, res) => {
+  try {
+    const alertas = lerDados(ARQUIVO_ALERTAS);
+
+    // Exibe os alertas mais recentes no início da lista.
+    const alertasOrdenados = [...alertas].sort(
+      (a, b) => new Date(b.dataHora) - new Date(a.dataHora)
+    );
+
+    return res.json(alertasOrdenados);
+
+  } catch (erro) {
+    console.error('Erro ao consultar alertas:', erro);
+
+    return res.status(500).json({
+      erro: 'Não foi possível consultar os alertas SOS.'
+    });
+  }
+});
+
+// ============================================================
+ // PUT /alertas/:id - ATUALIZAR STATUS DO ALERTA SOS
+ //
+ // Permite alterar o status de um alerta existente.
+ // Status permitidos: Novo, Em atendimento e Concluído.
+ // ============================================================
+
+app.put('/alertas/:id', (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { status } = req.body;
+
+    // Verifica se o ID é válido.
+    if (!Number.isInteger(id) || id < 1) {
+      return res.status(400).json({
+        erro: 'ID do alerta inválido.'
+      });
+    }
+
+    // Define os status aceitos pelo sistema.
+    const statusPermitidos = [
+      'Novo',
+      'Em atendimento',
+      'Concluído'
+    ];
+
+    if (!statusPermitidos.includes(status)) {
+      return res.status(400).json({
+        erro: 'Status inválido.'
+      });
+    }
+
+    // Consulta os alertas cadastrados.
+    const alertas = lerDados(ARQUIVO_ALERTAS);
+
+    // Procura o alerta pelo ID.
+    const indice = alertas.findIndex(
+      (alerta) => alerta.id === id
+    );
+
+    if (indice === -1) {
+      return res.status(404).json({
+        erro: 'Alerta não encontrado.'
+      });
+    }
+
+    // Atualiza somente o status.
+    alertas[indice].status = status;
+
+    // Salva a alteração no arquivo JSON.
+    salvarDados(ARQUIVO_ALERTAS, alertas);
+
+    return res.json({
+      mensagem: 'Status atualizado com sucesso.',
+      alerta: alertas[indice]
+    });
+
+  } catch (erro) {
+    console.error('Erro ao atualizar alerta:', erro);
+
+    return res.status(500).json({
+      erro: 'Não foi possível atualizar o status.'
+    });
+  }
+});
 
 // Inicia o servidor na porta 3333.
 app.listen(PORTA, () => {

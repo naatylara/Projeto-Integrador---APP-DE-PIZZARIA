@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": 1,
+    "nome": "Ana Teste",
+    "telefone": "43999990000",
+    "relacao": "Amiga",
+    "prioridade": 1,
+    "usuarioId": 1
+  }
+]

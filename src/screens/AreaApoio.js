@@ -13,14 +13,88 @@
 
 
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet  } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
+import * as Location from 'expo-location';
 
 export default function AreaApoio({ navigation }) {
   // Mensagem exibida quando se toca em um recurso que ainda não existe.
   const [aviso, setAviso] = useState('');
+  const [enviandoSOS, setEnviandoSOS] = useState(false);
+
+// Endereço da API para teste no computador.
+// No celular físico, precisaremos usar o IP do computador.
+const API_URL = 'http://localhost:3333';
+
+async function enviarSOS() {
+  if (enviandoSOS) return;
+
+  setEnviandoSOS(true);
+
+  try {
+    const permissao =
+      await Location.requestForegroundPermissionsAsync();
+
+    if (permissao.status !== 'granted') {
+      setAviso('Permissão de localização não autorizada.');
+      return;
+    }
+
+    const localizacao =
+      await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+
+    const resposta = await fetch(`${API_URL}/alertas`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        usuarioId: 1,
+        latitude: localizacao.coords.latitude,
+        longitude: localizacao.coords.longitude,
+      }),
+    });
+
+    if (!resposta.ok) {
+      throw new Error('Falha ao registrar SOS.');
+    }
+
+    const alerta = await resposta.json();
+
+    setAviso(
+      `Alerta SOS #${alerta.id} enviado com sucesso para a central de monitoramento.`
+    );
+
+  } catch (erro) {
+    console.log('Erro SOS:', erro);
+    setAviso('Não foi possível enviar o SOS. Verifique a API.');
+  } finally {
+    setEnviandoSOS(false);
+  }
+}
+function confirmarSOS() {
+  const mensagem = 'Deseja enviar um alerta SOS com sua localização para a central de monitoramento?';
+
+  if (Platform.OS === 'web') {
+    if (window.confirm(mensagem)) {
+      enviarSOS();
+    }
+    return;
+  }
+
+  Alert.alert(
+    'Confirmar alerta SOS',
+    mensagem,
+    [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Enviar alerta', onPress: enviarSOS },
+    ]
+  );
+}
 
   // SAÍDA RÁPIDA: popToTop() fecha todas as telas empilhadas e volta direto
   // para a primeira tela do Stack (a fachada), sem passar pelo PIN.
@@ -49,10 +123,10 @@ export default function AreaApoio({ navigation }) {
       onPress: () => navigation.navigate('RedeApoio'),
     },
     {
-      titulo: 'Localização',
-      texto: 'Enviar sua localização para contatos seguros',
+       titulo: 'Enviar Alerta SOS',
+      texto: 'Enviar sua localização para a central de monitoramento',
       icone: 'location',
-      onPress: () => setAviso('Localização: será implementada nas próximas entregas.'),
+      onPress: () => confirmarSOS(),  
     },
   ];
 

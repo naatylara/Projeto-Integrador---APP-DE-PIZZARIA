@@ -1,14 +1,18 @@
 // ============================================================
-// Ponto de entrada do app "Pede Pizza Já".
+// PEDE PIZZA JÁ
+// Arquivo principal de configuração do aplicativo.
 //
-// Aqui ficam o provedor do carrinho (CarrinhoProvider) e o navegador
-// em pilha (Stack), que registra TODAS as telas do protótipo da
-// Entrega 1: as da fachada (Início, Cardápio, Detalhes, Carrinho,
-// Finalizar e Confirmado) e as da área de apoio camuflada (Pin,
-// Apoio, Ligar180 e Ligar190).
+// Responsável por configurar a navegação entre as telas,
+// gerenciar o contexto compartilhado do carrinho e integrar
+// a interface da pizzaria à área de apoio.
 //
-// O nome dado em cada Stack.Screen ("Cardapio", "Pin"...) é o que as
-// telas usam em navigation.navigate("...") para ir de uma para outra.
+// O aplicativo possui duas áreas principais:
+// - Pizzaria: cardápio, pedidos, carrinho e finalização.
+// - Área de Apoio: acesso protegido por PIN, canais de ajuda,
+//   rede de contatos e envio de alertas SOS.
+//
+// As rotas registradas no Stack.Navigator permitem a
+// navegação entre as diferentes funcionalidades do sistema.
 // ============================================================
 
 
@@ -46,15 +50,14 @@ export default function App() {
          <Stack.Navigator
           screenOptions={{ headerShown: false }}
         >
-          {/* Fachada (app de pizzaria). A PRIMEIRA tela registrada é a tela inicial. */}
+          {/* Navegação principal da pizzaria. */}
           <Stack.Screen name="Inicio" component={Home} />
           <Stack.Screen name="Cardapio" component={Cardapio} />
           <Stack.Screen name="Detalhes" component={Pizza} />
           <Stack.Screen name="Carrinho" component={Carrinho} />
           <Stack.Screen name="Finalizar" component={FinalizarPedido} />
           <Stack.Screen name="Confirmado" component={PedidoConfirmado} />
-          {/* Área de apoio camuflada: só é alcançada pelo atalho oculto do Cardápio
-          (toque longo na pizza especial), passando pelo PIN. */}
+          {/* Área de apoio com acesso protegido por PIN. */}
           <Stack.Screen name="Pin" component={Pin} />
           <Stack.Screen name="Apoio" component={AreaApoio} />
           <Stack.Screen name="Ligar180" component={Ligar180} />

@@ -1,13 +1,15 @@
 // ============================================================
-// TELA 2 do protótipo da Entrega 1: "Cardápio".
+// CARDÁPIO
 //
-// Lista as pizzas (dados simulados de data/pizzas.js) com filtro por
-// categoria e ícone do carrinho com a quantidade de itens.
+// Exibe as pizzas disponíveis, organizadas por categorias,
+// permitindo visualizar os detalhes e adicionar itens ao carrinho.
 //
-// ATALHO OCULTO (mecanismo de entrada do disfarce): o toque curto em
-// uma pizza abre os Detalhes, como em qualquer app de pizzaria; o
-// toque LONGO (1,5 segundos) na pizza com a estrela abre a tela de PIN, que
-// leva à área de apoio. Nas demais pizzas, o toque longo não faz nada.
+// O cabeçalho apresenta o acesso ao carrinho e a quantidade
+// de produtos selecionados.
+//
+// A Área de Apoio possui um acesso discreto, disponível por
+// meio de um toque longo na pizza especial identificada
+// pela propriedade "especial".
 // ============================================================
 
 import React, { useState } from 'react';

@@ -1,9 +1,13 @@
 // ============================================================
-// TELA 1 do protótipo da Entrega 1: "Tela Inicial" da fachada.
+//TELA INICIAL
 //
-// Mostra a marca "Pede Pizza Já", o mascote e o botão "Ver Cardápio".
-// É a primeira tela registrada no Stack (App.js), então é a que abre
-// junto com o app. Também é a tela para onde a saída rápida volta.
+// Tela principal do aplicativo, responsável por apresentar
+// a identidade visual da pizzaria e permitir o acesso ao cardápio.
+//
+// Exibe a marca, o mascote, o slogan e o botão de navegação
+// para o cardápio.
+//
+// Também funciona como destino da saída rápida da Área de Apoio.
 // ============================================================
 
 import React from 'react';

@@ -1,9 +1,14 @@
 // ============================================================
-// TELA 3 do protótipo da Entrega 1: "Escolha da Pizza" (Detalhes).
+//DETALHES DA PIZZA
 //
-// Mostra a pizza escolhida no Cardápio e deixa escolher o tamanho e a
-// quantidade. O preço muda conforme o tamanho. O botão "Adicionar ao
-// Carrinho" guarda a escolha no carrinho e abre a tela do Carrinho.
+// Apresenta as informações da pizza selecionada no cardápio,
+// incluindo imagem, nome, descrição e preço.
+//
+// Permite selecionar o tamanho e a quantidade desejada,
+// atualizando o preço unitário conforme a opção escolhida.
+//
+// Ao adicionar o produto, os dados são enviados ao carrinho
+// compartilhado e o usuário é direcionado para a tela Carrinho.
 // ============================================================
 
 
@@ -41,7 +46,9 @@ export default function Pizza({ route, navigation }) {
         <Image source={pizza.imagem} style={estilos.imagem} />
         <Text style={estilos.nome}>{pizza.nome}</Text>
         <Text style={estilos.descricao}>{pizza.descricao}</Text>
-        <Text style={estilos.preco}>{formatarPreco(precoUnitario(pizza, tamanho))}</Text>
+        <Text style={estilos.preco}>
+          Preço unitário: {formatarPreco(precoUnitario(pizza, tamanho))}
+        </Text>
 
         <Text style={estilos.rotulo}>Tamanho:</Text>
         <View style={estilos.linhaTamanhos}>
@@ -67,22 +74,26 @@ export default function Pizza({ route, navigation }) {
         {/* O botão + soma 1; o botão - diminui 1, mas nunca abaixo de 1 (Math.max). */}
         <Text style={estilos.rotulo}>Quantidade</Text>
         <View style={estilos.linhaQuantidade}>
-          <TouchableOpacity
-            style={estilos.botaoQtd}
-            onPress={() => setQuantidade(quantidade + 1)}
-          >
-            <Text style={estilos.textoQtd}>+</Text>
-          </TouchableOpacity>
-          <View style={estilos.visorQtd}>
-            <Text style={estilos.textoQtd}>{quantidade}</Text>
+            <TouchableOpacity
+              style={estilos.botaoQtd}
+              onPress={() => setQuantidade(Math.max(1, quantidade - 1))}
+            >
+              <Text style={estilos.textoQtd}>-</Text>
+            </TouchableOpacity>
+
+            {/* Quantidade selecionada */}
+            <View style={estilos.visorQtd}>
+              <Text style={estilos.textoQtd}>{quantidade}</Text>
+            </View>
+
+            {/* Aumentar quantidade */}
+            <TouchableOpacity
+              style={estilos.botaoQtd}
+              onPress={() => setQuantidade(quantidade + 1)}
+            >
+              <Text style={estilos.textoQtd}>+</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={estilos.botaoQtd}
-            onPress={() => setQuantidade(Math.max(1, quantidade - 1))}
-          >
-            <Text style={estilos.textoQtd}>-</Text>
-          </TouchableOpacity>
-        </View>
 
         <TouchableOpacity style={estilos.botaoPrincipal} onPress={adicionarAoCarrinho}>
           <Text style={estilos.botaoPrincipalTexto}>Adicionar ao Carrinho</Text>

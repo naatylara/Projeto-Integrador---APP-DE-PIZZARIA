@@ -285,11 +285,7 @@ export default function RedeApoio({ navigation }) {
   // Não executa a função SAIR RÁPIDO.
   // ============================================================
   function voltar() {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      navigation.navigate('AreaApoio');
-    }
+    navigation.navigate('Apoio');
   }
 
   // ============================================================

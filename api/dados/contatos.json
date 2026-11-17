@@ -6,5 +6,13 @@
     "relacao": "Amiga",
     "prioridade": 1,
     "usuarioId": 1
+  },
+  {
+    "id": 2,
+    "nome": "Alice",
+    "telefone": "43999999999",
+    "relacao": "Filha",
+    "prioridade": 4,
+    "usuarioId": 1
   }
 ]

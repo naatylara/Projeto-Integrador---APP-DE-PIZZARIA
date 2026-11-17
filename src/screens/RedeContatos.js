@@ -1,40 +1,26 @@
 
- // ============================================================
- // TELA: "Rede de Contatos".
- //
- // Faz parte da Área de Apoio, escondida atrás da fachada de
- // pizzaria. Permite cadastrar, visualizar, editar e excluir
- // contatos de confiança, informando nome, telefone, relação
- // e prioridade.
- //
- // ENTREGA 4:
- // Consulta os contatos cadastrados na API REST.
- // Cadastro, edição e exclusão ainda utilizam useState
- // até serem integrados às respectivas rotas da API.
- // ============================================================
+// ============================================================
+// TELA: REDE DE APOIO
+//
+// A tela faz parte da área de apoio camuflada do aplicativo.
+//
+// ENTREGA 4 - FUNCIONALIDADES:
+// GET: consultar contatos cadastrados.
+// POST: cadastrar novos contatos.
+// PUT: atualizar contatos existentes.
+// DELETE: excluir contatos.
+// 
+// ============================================================
 
 import React, { useState, useEffect } from 'react';
 
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-  StyleSheet,
-  Platform,
-} from 'react-native';
-
+import {  View,  Text,  TextInput,  TouchableOpacity,  FlatList,  Alert,  StyleSheet,  Platform,  Linking, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
 
-// ============================================================
-// ENDEREÇO DA API REST
-//
-// Para os testes no navegador do computador.
-// ============================================================
+
+// Endereço da API
 const API_URL = 'http://localhost:3333';
 
 export default function RedeApoio({ navigation }) {
@@ -42,6 +28,7 @@ export default function RedeApoio({ navigation }) {
   // ============================================================
   // ESTADOS DA TELA
   // ============================================================
+
   const [contatos, setContatos] = useState([]);
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
@@ -52,11 +39,10 @@ export default function RedeApoio({ navigation }) {
   // ============================================================
   // MÁSCARA AUTOMÁTICA DO TELEFONE
   //
-  // Exemplo: 43999999999
-  // Resultado: (43)9.9999-9999
-  //
-  // Remove caracteres não numéricos e limita a 11 dígitos.
+  // Exemplo:
+  // 43999999999 -> (43)9.9999-9999
   // ============================================================
+
   function formatarTelefone(valor) {
     const numeros = String(valor || '')
       .replace(/\D/g, '')
@@ -82,10 +68,11 @@ export default function RedeApoio({ navigation }) {
   }
 
   // ============================================================
-  // ENTREGA 4: CONSULTAR CONTATOS NA API
+  // GET - CONSULTAR CONTATOS NA API
   //
-  // Quando a tela é aberta, consulta GET /contatos.
+  // Ao abrir a tela, os contatos são carregados do servidor.
   // ============================================================
+
   useEffect(() => {
     let ativo = true;
 
@@ -114,10 +101,29 @@ export default function RedeApoio({ navigation }) {
       ativo = false;
     };
   }, []);
+  // ============================================================
+  // ORDENAÇÃO AUTOMÁTICA DOS CONTATOS
+  //
+  // A prioridade é usada apenas internamente.
+  // Quanto menor o número, mais acima o contato aparece.
+  // A prioridade não é exibida nos cartões.
+  // ============================================================
+
+  const contatosOrdenados = [...contatos].sort((a, b) => {
+    const diferenca =
+      Number(a.prioridade) - Number(b.prioridade);
+
+    if (diferenca !== 0) {
+      return diferenca;
+    }
+
+    return Number(a.id) - Number(b.id);
+  });
 
   // ============================================================
   // LIMPAR FORMULÁRIO
   // ============================================================
+
   function limparFormulario() {
     setNome('');
     setTelefone('');
@@ -129,9 +135,10 @@ export default function RedeApoio({ navigation }) {
   // ============================================================
   // MENSAGENS DE AVISO
   //
-  // No navegador utiliza window.alert.
-  // No celular utiliza Alert.alert.
+  // Navegador: window.alert
+  // Celular: Alert.alert
   // ============================================================
+
   function mostrarAviso(titulo, mensagem) {
     if (Platform.OS === 'web') {
       window.alert(`${titulo}\n${mensagem}`);
@@ -140,13 +147,13 @@ export default function RedeApoio({ navigation }) {
     }
   }
 
-  
   // ============================================================
-  // ENTREGA 4: CADASTRAR CONTATOS NA API REST
+  // POST E PUT - CADASTRAR OU EDITAR CONTATO
   //
-  // POST /contatos: envia os dados para o servidor.
-  // PUT /contatos/:id será integrado na próxima etapa.
+  // Quando editandoId é null, cadastra um novo contato.
+  // Quando existe editandoId, atualiza o contato na API.
   // ============================================================
+
   async function salvarContato() {
 
     // Verifica se todos os campos foram preenchidos.
@@ -156,11 +163,14 @@ export default function RedeApoio({ navigation }) {
       !relacao.trim() ||
       !prioridade.trim()
     ) {
-      mostrarAviso('Atenção', 'Preencha todos os campos.');
+      mostrarAviso(
+        'Atenção',
+        'Preencha todos os campos.'
+      );
       return;
     }
 
-    // Valida a prioridade.
+    // A prioridade precisa ser um número inteiro positivo.
     const numeroPrioridade = Number(prioridade);
 
     if (
@@ -174,7 +184,7 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
-    // Remove a máscara para enviar somente os números.
+    // Remove a máscara antes de enviar o telefone para a API.
     const telefoneNumeros = telefone.replace(/\D/g, '');
 
     if (telefoneNumeros.length !== 11) {
@@ -185,21 +195,19 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
+    // Dados enviados ao servidor.
     const dados = {
       nome: nome.trim(),
       telefone: telefoneNumeros,
       relacao: relacao.trim(),
       prioridade: numeroPrioridade,
-      usuarioId: 1, // Usuário fictício cadastrado na API.
+      usuarioId: 1, // Usuário fictício de teste.
     };
 
-    
-    // ============================================================
-    // ENTREGA 4: EDITAR CONTATO NA API REST
-    //
-    // PUT /contatos/:id
-    // Envia os dados atualizados para o servidor e salva no JSON.
-    // ============================================================
+    // ==========================================================
+    // PUT - ATUALIZAR CONTATO EXISTENTE
+    // ==========================================================
+
     if (editandoId !== null) {
       try {
         const resposta = await fetch(
@@ -213,15 +221,13 @@ export default function RedeApoio({ navigation }) {
           }
         );
 
-        // Verifica se o servidor aceitou a alteração.
         if (!resposta.ok) {
           throw new Error('Não foi possível editar o contato.');
         }
 
-        // Recebe o contato atualizado da API.
         const contatoAtualizado = await resposta.json();
 
-        // Atualiza a lista na tela sem precisar recarregar.
+        // Atualiza o contato na lista sem recarregar a tela.
         setContatos((anteriores) =>
           anteriores.map((contato) =>
             contato.id === editandoId
@@ -230,7 +236,6 @@ export default function RedeApoio({ navigation }) {
           )
         );
 
-        // Limpa os campos e sai do modo de edição.
         limparFormulario();
 
         mostrarAviso(
@@ -250,8 +255,10 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
+    // ==========================================================
+    // POST - CADASTRAR NOVO CONTATO
+    // ==========================================================
 
-    // Cadastro permanente utilizando a API.
     try {
       const resposta = await fetch(`${API_URL}/contatos`, {
         method: 'POST',
@@ -265,10 +272,9 @@ export default function RedeApoio({ navigation }) {
         throw new Error('Não foi possível cadastrar o contato.');
       }
 
-      // A API retorna o contato com seu ID numérico.
       const novoContato = await resposta.json();
 
-      // Atualiza a lista na tela.
+      // Inclui o novo contato na lista.
       setContatos((anteriores) => [
         ...anteriores,
         novoContato,
@@ -286,7 +292,7 @@ export default function RedeApoio({ navigation }) {
 
       mostrarAviso(
         'Erro',
-        'Não foi possível salvar o contato na API. Verifique se o servidor está funcionando.'
+        'Não foi possível salvar o contato. Verifique se o servidor está funcionando.'
       );
     }
   }
@@ -294,9 +300,9 @@ export default function RedeApoio({ navigation }) {
   // ============================================================
   // EDITAR CONTATO
   //
-  // Preenche o formulário com os dados do contato.
-  // O telefone aparece com a máscara automática.
+  // Preenche o formulário com os dados do contato selecionado.
   // ============================================================
+
   function editarContato(contato) {
     setEditandoId(contato.id);
     setNome(contato.nome);
@@ -305,16 +311,14 @@ export default function RedeApoio({ navigation }) {
     setPrioridade(String(contato.prioridade));
   }
 
- 
   // ============================================================
-  // ENTREGA 4: EXCLUIR CONTATO NA API REST
+  // DELETE - EXCLUIR CONTATO NA API
   //
-  // DELETE /contatos/:id
-  // Exclui o contato permanentemente após confirmação.
+  // A exclusão acontece somente após a confirmação.
   // ============================================================
+
   function excluirContato(id) {
 
-    // Só exclui após a confirmação do usuário.
     async function confirmarExclusao() {
       try {
         const resposta = await fetch(
@@ -324,20 +328,17 @@ export default function RedeApoio({ navigation }) {
           }
         );
 
-        // Verifica se a API conseguiu excluir.
         if (!resposta.ok) {
           throw new Error('Não foi possível excluir o contato.');
         }
 
-        // Remove da lista somente depois que a API confirmar.
+        // Remove da lista após a confirmação do servidor.
         setContatos((anteriores) =>
           anteriores.filter(
             (contato) => contato.id !== id
           )
         );
 
-        // Limpa o formulário se o contato excluído
-        // estava sendo editado.
         if (editandoId === id) {
           limparFormulario();
         }
@@ -368,7 +369,7 @@ export default function RedeApoio({ navigation }) {
       }
 
     } else {
-      // Confirmação no aplicativo mobile.
+      // Confirmação no celular.
       Alert.alert(
         'Excluir contato',
         'Deseja realmente excluir este contato?',
@@ -388,47 +389,115 @@ export default function RedeApoio({ navigation }) {
   }
 
   // ============================================================
-  // SETA VERMELHA: VOLTAR PARA ÁREA DE APOIO
+  // LIGAR PARA O CONTATO
   //
-  // Não executa a função SAIR RÁPIDO.
+  // Utiliza Linking para abrir o discador do celular.
+  // O número é preenchido automaticamente.
+  // A ligação não é iniciada sem confirmação.
   // ============================================================
+
+  async function ligarContato(numero) {
+    const telefoneLimpo = String(numero || '')
+      .replace(/\D/g, '');
+
+    if (!telefoneLimpo) {
+      mostrarAviso(
+        'Atenção',
+        'Este contato não possui telefone válido.'
+      );
+      return;
+    }
+
+    try {
+      await Linking.openURL(`tel:${telefoneLimpo}`);
+
+    } catch (erro) {
+      console.error('Erro ao abrir o discador:', erro);
+
+      mostrarAviso(
+        'Não foi possível ligar',
+        'Abra esta opção em um celular com discador disponível.'
+      );
+    }
+  }
+
+  // ============================================================
+  // NAVEGAÇÃO
+  //
+  // Seta vermelha: retorna para a Área de Apoio.
+  // SAIR RÁPIDO: retorna para a tela inicial da pizzaria.
+  // ============================================================
+
   function voltar() {
     navigation.navigate('Apoio');
   }
 
-  // ============================================================
-  // SAIR RÁPIDO
-  //
-  // Retorna para a tela inicial da pizzaria.
-  // ============================================================
   function sairRapido() {
     navigation.popToTop();
   }
 
   // ============================================================
-  // EXIBIR CADA CONTATO CADASTRADO
+  // CARTÃO DE CADA CONTATO
+  //
+  // Cada cartão mostra:
+  // - Prioridade
+  // - Nome
+  // - Relação
+  // - Telefone
+  // - Botão Ligar
+  // - Botões Editar e Excluir
   // ============================================================
-  function renderizarContato({ item }) {
 
+  function renderizarContato({ item }) {
     return (
       <View style={estilos.cartao}>
 
-        <Text style={estilos.nomeContato}>
+        <Ionicons
+          name="person-circle-outline"
+          size={34}
+          color={cores.vermelho}
+          style={estilos.iconeContato}
+        />
+
+        <Text
+          style={estilos.nomeContato}
+          numberOfLines={2}
+        >
           {item.nome}
         </Text>
 
-        <Text style={estilos.detalhe}>
-          Telefone: {formatarTelefone(item.telefone)}
+        <Text
+          style={estilos.detalhe}
+          numberOfLines={2}
+        >
+          {item.relacao}
         </Text>
 
-        <Text style={estilos.detalhe}>
-          Relação: {item.relacao}
+        <Text
+          style={estilos.telefoneContato}
+          numberOfLines={2}
+        >
+          {formatarTelefone(item.telefone)}
         </Text>
 
-        <Text style={estilos.detalhe}>
-          Prioridade: {item.prioridade}
-        </Text>
+        {/* BOTÃO PARA LIGAR */}
+        <TouchableOpacity
+          style={estilos.botaoLigar}
+          onPress={() => ligarContato(item.telefone)}
+          accessibilityLabel={`Ligar para ${item.nome}`}
+        >
+          <Ionicons
+            name="call-outline"
+            size={17}
+            color={cores.branco}
+          />
 
+          <Text style={estilos.textoBotao}>
+            Ligar
+          </Text>
+        </TouchableOpacity>
+
+        {/* BOTÕES EDITAR E EXCLUIR */}
         <View style={estilos.acoes}>
 
           <TouchableOpacity
@@ -437,7 +506,7 @@ export default function RedeApoio({ navigation }) {
           >
             <Ionicons
               name="create-outline"
-              size={18}
+              size={15}
               color={cores.vermelho}
             />
 
@@ -452,7 +521,7 @@ export default function RedeApoio({ navigation }) {
           >
             <Ionicons
               name="trash-outline"
-              size={18}
+              size={15}
               color={cores.branco}
             />
 
@@ -467,27 +536,34 @@ export default function RedeApoio({ navigation }) {
   }
 
   // ============================================================
-  // INTERFACE DA TELA
+  // INTERFACE PRINCIPAL
+  //
+  // O FlatList apresenta os contatos em duas colunas.
+  // ListHeaderComponent contém o cabeçalho.
+  // ListFooterComponent contém o formulário e SAIR RÁPIDO.
   // ============================================================
+
   return (
     <SafeAreaView style={estilos.tela}>
 
       <FlatList
-        data={contatos}
+        data={contatosOrdenados}
         keyExtractor={(item) => String(item.id)}
         renderItem={renderizarContato}
+        numColumns={2}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={estilos.conteudo}
+        columnWrapperStyle={estilos.linhaContatos}
+
+        // ========================================================
+        // CABEÇALHO E TÍTULO DOS CONTATOS
+        // ========================================================
 
         ListHeaderComponent={
           <View>
 
-            {/* CABEÇALHO */}
             <View style={estilos.cabecalho}>
-
-              <TouchableOpacity
-                onPress={voltar}
-              >
+              <TouchableOpacity onPress={voltar}>
                 <Ionicons
                   name="arrow-back"
                   size={26}
@@ -498,21 +574,49 @@ export default function RedeApoio({ navigation }) {
               <Text style={estilos.titulo}>
                 Rede de Apoio
               </Text>
-
             </View>
 
-            {/* DESCRIÇÃO */}
             <Text style={estilos.descricao}>
-              Cadastre pessoas de confiança que
-              poderão fazer parte da sua rede de apoio.
+              Pessoas de confiança que você pode contatar rapidamente.
             </Text>
 
             <Text style={estilos.aviso}>
-              Protótipo acadêmico: utilize apenas
-              informações fictícias.
+              Protótipo acadêmico: utilize apenas informações fictícias.
             </Text>
 
-            {/* NOME */}
+            <Text style={estilos.subtitulo}>
+              Meus contatos de confiança
+            </Text>
+
+          </View>
+        }
+
+        // ========================================================
+        // MENSAGEM QUANDO NÃO EXISTEM CONTATOS
+        // ========================================================
+
+        ListEmptyComponent={
+          <Text style={estilos.vazio}>
+            Nenhum contato cadastrado.
+          </Text>
+        }
+
+        // ========================================================
+        // FORMULÁRIO ABAIXO DOS CONTATOS
+        // ========================================================
+
+        ListFooterComponent={
+          <View>
+
+            <View style={estilos.separador} />
+
+            <Text style={estilos.subtituloFormulario}>
+              {editandoId !== null
+                ? 'Editar contato'
+                : 'Cadastrar novo contato'}
+            </Text>
+
+            {/* CAMPO NOME */}
             <TextInput
               style={estilos.campo}
               placeholder="Nome do contato"
@@ -520,7 +624,7 @@ export default function RedeApoio({ navigation }) {
               onChangeText={setNome}
             />
 
-            {/* TELEFONE: CAMPO ÚNICO COM MÁSCARA */}
+            {/* CAMPO TELEFONE COM MÁSCARA */}
             <TextInput
               style={estilos.campo}
               placeholder="Telefone"
@@ -532,7 +636,7 @@ export default function RedeApoio({ navigation }) {
               maxLength={15}
             />
 
-            {/* RELAÇÃO */}
+            {/* CAMPO RELAÇÃO */}
             <TextInput
               style={estilos.campo}
               placeholder="Relação (mãe, irmã, amiga...)"
@@ -540,7 +644,7 @@ export default function RedeApoio({ navigation }) {
               onChangeText={setRelacao}
             />
 
-            {/* PRIORIDADE */}
+            {/* CAMPO PRIORIDADE */}
             <TextInput
               style={estilos.campo}
               placeholder="Prioridade (1, 2, 3...)"
@@ -549,57 +653,58 @@ export default function RedeApoio({ navigation }) {
               keyboardType="number-pad"
             />
 
-            {/* BOTÃO CADASTRAR / SALVAR */}
-            <TouchableOpacity
-              style={estilos.botaoPrincipal}
-              onPress={salvarContato}
-            >
-              <Text style={estilos.textoBotao}>
-                {editandoId !== null
-                  ? 'Salvar alterações'
-                  : 'Cadastrar contato'}
-              </Text>
-            </TouchableOpacity>
+            {/* BOTÃO MENOR E CENTRALIZADO */}
+            <View style={estilos.areaBotaoCadastrar}>
+
+              <TouchableOpacity
+                style={estilos.botaoCadastrar}
+                onPress={salvarContato}
+              >
+                <Ionicons
+                  name={
+                    editandoId !== null
+                      ? 'save-outline'
+                      : 'person-add-outline'
+                  }
+                  size={17}
+                  color={cores.branco}
+                />
+
+                <Text style={estilos.textoBotao}>
+                  {editandoId !== null
+                    ? 'Salvar alterações'
+                    : 'Cadastrar contato'}
+                </Text>
+              </TouchableOpacity>
+
+            </View>
 
             {/* CANCELAR EDIÇÃO */}
             {editandoId !== null && (
-              <TouchableOpacity
-                onPress={limparFormulario}
-              >
+              <TouchableOpacity onPress={limparFormulario}>
                 <Text style={estilos.cancelar}>
                   Cancelar edição
                 </Text>
               </TouchableOpacity>
             )}
 
-            <Text style={estilos.subtitulo}>
-              Contatos cadastrados
-            </Text>
+            {/* BOTÃO SAIR RÁPIDO */}
+            <TouchableOpacity
+              style={estilos.botaoSair}
+              onPress={sairRapido}
+            >
+              <Ionicons
+                name="exit-outline"
+                size={22}
+                color={cores.branco}
+              />
+
+              <Text style={estilos.textoBotao}>
+                SAIR RÁPIDO
+              </Text>
+            </TouchableOpacity>
 
           </View>
-        }
-
-        ListEmptyComponent={
-          <Text style={estilos.vazio}>
-            Nenhum contato cadastrado.
-          </Text>
-        }
-
-        ListFooterComponent={
-          <TouchableOpacity
-            style={estilos.botaoSair}
-            onPress={sairRapido}
-          >
-            <Ionicons
-              name="exit-outline"
-              size={22}
-              color={cores.branco}
-            />
-
-            <Text style={estilos.textoBotao}>
-              SAIR RÁPIDO
-            </Text>
-          </TouchableOpacity>
         }
       />
 
@@ -607,9 +712,8 @@ export default function RedeApoio({ navigation }) {
   );
 }
 
-// ============================================================
-// ESTILOS ORIGINAIS DA TELA
-// ============================================================
+
+
 const estilos = StyleSheet.create({
 
   tela: {
@@ -644,7 +748,126 @@ const estilos = StyleSheet.create({
   aviso: {
     fontSize: 12,
     color: cores.cinza,
+    marginBottom: 16,
+  },
+
+  subtitulo: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: cores.texto,
+    marginBottom: 15,
+  },
+
+  // Organiza os cartões lado a lado.
+  linhaContatos: {
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+
+  cartao: {
+    flex: 1,
+    minWidth: 0,
+    backgroundColor: cores.branco,
+    borderWidth: 1,
+    borderColor: cores.cinzaClaro,
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+
+  
+  iconeContato: {
+    marginBottom: 4,
+  },
+
+  nomeContato: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: cores.vermelho,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+
+  detalhe: {
+    fontSize: 12,
+    color: cores.texto,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+
+  telefoneContato: {
+    fontSize: 11,
+    color: cores.texto,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+
+  botaoLigar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 7,
+    backgroundColor: cores.vermelho,
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    alignSelf: 'stretch',
+  },
+
+  acoes: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 10,
+  },
+
+  botaoEditar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    borderWidth: 1,
+    borderColor: cores.vermelho,
+    borderRadius: 8,
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+  },
+
+  textoEditar: {
+    color: cores.vermelho,
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+
+  botaoExcluir: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: cores.vermelho,
+    borderRadius: 8,
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+  },
+
+  textoBotao: {
+    color: cores.branco,
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
+
+  separador: {
+    borderTopWidth: 1,
+    borderTopColor: cores.cinzaClaro,
+    marginTop: 15,
     marginBottom: 20,
+  },
+
+  subtituloFormulario: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: cores.texto,
+    marginBottom: 15,
   },
 
   campo: {
@@ -657,82 +880,20 @@ const estilos = StyleSheet.create({
     fontSize: 14,
   },
 
-  botaoPrincipal: {
+  areaBotaoCadastrar: {
+    alignItems: 'center',
+    marginTop: 4,
+  },
+
+  botaoCadastrar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     backgroundColor: cores.vermelho,
-    padding: 15,
+    paddingVertical: 11,
+    paddingHorizontal: 20,
     borderRadius: 10,
-    alignItems: 'center',
-  },
-
-  textoBotao: {
-    color: cores.branco,
-    fontWeight: 'bold',
-  },
-
-  subtitulo: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: cores.texto,
-    marginTop: 25,
-    marginBottom: 15,
-  },
-
-  vazio: {
-    textAlign: 'center',
-    color: cores.cinza,
-    marginBottom: 20,
-  },
-
-  cartao: {
-    backgroundColor: cores.branco,
-    borderWidth: 1,
-    borderColor: cores.cinzaClaro,
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 12,
-  },
-
-  nomeContato: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: cores.vermelho,
-    marginBottom: 8,
-  },
-
-  detalhe: {
-    fontSize: 13,
-    color: cores.texto,
-    marginBottom: 4,
-  },
-
-  acoes: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 12,
-  },
-
-  botaoEditar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    borderWidth: 1,
-    borderColor: cores.vermelho,
-    borderRadius: 8,
-    padding: 10,
-  },
-
-  textoEditar: {
-    color: cores.vermelho,
-    fontWeight: 'bold',
-  },
-
-  botaoExcluir: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    backgroundColor: cores.vermelho,
-    borderRadius: 8,
-    padding: 10,
   },
 
   cancelar: {
@@ -741,6 +902,13 @@ const estilos = StyleSheet.create({
     marginTop: 12,
   },
 
+  vazio: {
+    textAlign: 'center',
+    color: cores.cinza,
+    marginBottom: 20,
+  },
+
+  // Botão grande para retornar rapidamente à pizzaria.
   botaoSair: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -749,8 +917,7 @@ const estilos = StyleSheet.create({
     backgroundColor: cores.vermelho,
     padding: 15,
     borderRadius: 12,
-    marginTop: 20,
+    marginTop: 28,
   },
 
 });
-

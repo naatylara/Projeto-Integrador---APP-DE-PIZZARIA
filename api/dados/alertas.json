@@ -6,6 +6,15 @@
     "dataHora": "2026-11-17T14:30:50.270Z",
     "latitude": -23.2765,
     "longitude": -51.278,
-    "status": "Em atendimento"
+    "status": "Novo"
+  },
+  {
+    "id": 2,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-17T14:46:38.975Z",
+    "latitude": -23.2765,
+    "longitude": -51.278,
+    "status": "Novo"
   }
 ]

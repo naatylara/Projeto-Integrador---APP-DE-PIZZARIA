@@ -1,14 +1,15 @@
 // ============================================================
-// TELA 10 do protótipo da Entrega 1: "Área de Apoio".
+// ÁREA DE APOIO
 //
-// É a área real do app, escondida atrás da fachada de pizzaria.
-// Traz os canais oficiais obrigatórios (Ligue 180 e 190), a rede
-// de contatos de confiança, o envio de localização e o botão
-// "Sair Rápido". Mostra também o aviso de que o app é um
-// protótipo acadêmico, como exige o documento do projeto.
+// Área de acesso restrito, disponibilizada por meio do
+// mecanismo de entrada oculto no cardápio da pizzaria.
 //
-// A Rede de Contatos possui um CRUD funcional da Entrega 3,
-// com dados temporários. A Localização ainda mostra um aviso.
+// Reúne canais de atendimento, rede de contatos de confiança,
+// envio de alertas SOS com localização e saída rápida.
+//
+// Os alertas SOS são registrados pela API e disponibilizados
+// no Dashboard de monitoramento, permitindo o acompanhamento
+// e a atualização do status de cada ocorrência.
 // ============================================================
 
 
@@ -20,7 +21,7 @@ import { cores } from '../theme';
 import * as Location from 'expo-location';
 
 export default function AreaApoio({ navigation }) {
-  // Mensagem exibida quando se toca em um recurso que ainda não existe.
+ // Mensagem de retorno sobre o envio do alerta SOS.
   const [aviso, setAviso] = useState('');
   const [enviandoSOS, setEnviandoSOS] = useState(false);
 
@@ -66,7 +67,7 @@ async function enviarSOS() {
     const alerta = await resposta.json();
 
     setAviso(
-      `Alerta SOS #${alerta.id} enviado com sucesso para a central de monitoramento.`
+      `Alerta SOS #${alerta.id} registrado na central de monitoramento do aplicativo.`
     );
 
   } catch (erro) {
@@ -146,8 +147,8 @@ function confirmarSOS() {
           <View style={estilos.boasVindasTexto}>
             <Text style={estilos.destaque}>Você não está sozinha</Text>
             <Text style={estilos.texto}>
-              Aqui você encontra ajuda, orientações e canais de apoio.{'\n'}
-              Sua segurança importa !!
+              Aqui você encontra orientações e canais de apoio.{'\n'}
+              Sua segurança importa!
             </Text>
           </View>
           <Image
@@ -174,9 +175,6 @@ function confirmarSOS() {
           <Text style={estilos.botaoSairTexto}>SAIR RÁPIDO</Text>
         </TouchableOpacity>
 
-        <Text style={estilos.rodape}>
-          Protótipo acadêmico. Não substitui atendimento policial, jurídico, psicológico ou de saúde real.
-        </Text>
       </View>
     </SafeAreaView>
   );
@@ -228,5 +226,5 @@ const estilos = StyleSheet.create({
     marginTop: 24,
   },
   botaoSairTexto: { color: cores.branco, fontSize: 16, fontWeight: 'bold' },
-  rodape: { fontSize: 10, color: cores.cinza, textAlign: 'center', marginTop: 16 },
+
 });

@@ -42,6 +42,15 @@
     "dataHora": "2026-11-17T16:18:50.541Z",
     "latitude": -23.28594515183747,
     "longitude": -51.25957359435054,
-    "status": "Novo"
+    "status": "Concluído"
+  },
+  {
+    "id": 6,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-17T20:47:59.741Z",
+    "latitude": -23.285929438623022,
+    "longitude": -51.25963554978457,
+    "status": "Concluído"
   }
 ]

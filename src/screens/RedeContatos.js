@@ -193,24 +193,63 @@ export default function RedeApoio({ navigation }) {
       usuarioId: 1, // Usuário fictício cadastrado na API.
     };
 
-    // A edição ainda será integrada ao PUT.
+    
+    // ============================================================
+    // ENTREGA 4: EDITAR CONTATO NA API REST
+    //
+    // PUT /contatos/:id
+    // Envia os dados atualizados para o servidor e salva no JSON.
+    // ============================================================
     if (editandoId !== null) {
-      setContatos((anteriores) =>
-        anteriores.map((contato) =>
-          contato.id === editandoId
-            ? { ...contato, ...dados }
-            : contato
-        )
-      );
+      try {
+        const resposta = await fetch(
+          `${API_URL}/contatos/${editandoId}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dados),
+          }
+        );
 
-      mostrarAviso(
-        'Sucesso',
-        'Contato atualizado na tela!'
-      );
+        // Verifica se o servidor aceitou a alteração.
+        if (!resposta.ok) {
+          throw new Error('Não foi possível editar o contato.');
+        }
 
-      limparFormulario();
+        // Recebe o contato atualizado da API.
+        const contatoAtualizado = await resposta.json();
+
+        // Atualiza a lista na tela sem precisar recarregar.
+        setContatos((anteriores) =>
+          anteriores.map((contato) =>
+            contato.id === editandoId
+              ? contatoAtualizado
+              : contato
+          )
+        );
+
+        // Limpa os campos e sai do modo de edição.
+        limparFormulario();
+
+        mostrarAviso(
+          'Sucesso',
+          'Contato atualizado e salvo na API!'
+        );
+
+      } catch (erro) {
+        console.error('Erro ao editar contato:', erro);
+
+        mostrarAviso(
+          'Erro',
+          'Não foi possível atualizar o contato. Verifique se a API está funcionando.'
+        );
+      }
+
       return;
     }
+
 
     // Cadastro permanente utilizando a API.
     try {

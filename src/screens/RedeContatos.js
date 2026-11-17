@@ -305,25 +305,60 @@ export default function RedeApoio({ navigation }) {
     setPrioridade(String(contato.prioridade));
   }
 
+ 
   // ============================================================
-  // EXCLUIR CONTATO
+  // ENTREGA 4: EXCLUIR CONTATO NA API REST
   //
-  // Solicita confirmação antes da exclusão local.
+  // DELETE /contatos/:id
+  // Exclui o contato permanentemente após confirmação.
   // ============================================================
   function excluirContato(id) {
 
-    function confirmarExclusao() {
-      setContatos((anteriores) =>
-        anteriores.filter((contato) => contato.id !== id)
-      );
+    // Só exclui após a confirmação do usuário.
+    async function confirmarExclusao() {
+      try {
+        const resposta = await fetch(
+          `${API_URL}/contatos/${id}`,
+          {
+            method: 'DELETE',
+          }
+        );
 
-      if (editandoId === id) {
-        limparFormulario();
+        // Verifica se a API conseguiu excluir.
+        if (!resposta.ok) {
+          throw new Error('Não foi possível excluir o contato.');
+        }
+
+        // Remove da lista somente depois que a API confirmar.
+        setContatos((anteriores) =>
+          anteriores.filter(
+            (contato) => contato.id !== id
+          )
+        );
+
+        // Limpa o formulário se o contato excluído
+        // estava sendo editado.
+        if (editandoId === id) {
+          limparFormulario();
+        }
+
+        mostrarAviso(
+          'Sucesso',
+          'Contato excluído com sucesso da API!'
+        );
+
+      } catch (erro) {
+        console.error('Erro ao excluir contato:', erro);
+
+        mostrarAviso(
+          'Erro',
+          'Não foi possível excluir o contato. Verifique se a API está funcionando.'
+        );
       }
     }
 
+    // Confirmação no navegador.
     if (Platform.OS === 'web') {
-
       const confirmou = window.confirm(
         'Deseja realmente excluir este contato?'
       );
@@ -333,7 +368,7 @@ export default function RedeApoio({ navigation }) {
       }
 
     } else {
-
+      // Confirmação no aplicativo mobile.
       Alert.alert(
         'Excluir contato',
         'Deseja realmente excluir este contato?',

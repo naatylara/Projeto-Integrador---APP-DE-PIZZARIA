@@ -6,13 +6,5 @@
     "relacao": "Amiga",
     "prioridade": 1,
     "usuarioId": 1
-  },
-  {
-    "id": 2,
-    "nome": "Juliana Test",
-    "telefone": "43999999999",
-    "relacao": "Irmã",
-    "prioridade": 1,
-    "usuarioId": 1
   }
 ]

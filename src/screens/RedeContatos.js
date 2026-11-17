@@ -140,14 +140,16 @@ export default function RedeApoio({ navigation }) {
     }
   }
 
+  
   // ============================================================
-  // SALVAR CONTATO
+  // ENTREGA 4: CADASTRAR CONTATOS NA API REST
   //
-  // Nesta etapa, cadastro e edição ainda são locais.
-  // Na próxima etapa serão conectados à API.
+  // POST /contatos: envia os dados para o servidor.
+  // PUT /contatos/:id será integrado na próxima etapa.
   // ============================================================
-  function salvarContato() {
+  async function salvarContato() {
 
+    // Verifica se todos os campos foram preenchidos.
     if (
       !nome.trim() ||
       !telefone.trim() ||
@@ -158,6 +160,7 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
+    // Valida a prioridade.
     const numeroPrioridade = Number(prioridade);
 
     if (
@@ -171,6 +174,7 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
+    // Remove a máscara para enviar somente os números.
     const telefoneNumeros = telefone.replace(/\D/g, '');
 
     if (telefoneNumeros.length !== 11) {
@@ -186,10 +190,11 @@ export default function RedeApoio({ navigation }) {
       telefone: telefoneNumeros,
       relacao: relacao.trim(),
       prioridade: numeroPrioridade,
+      usuarioId: 1, // Usuário fictício cadastrado na API.
     };
 
+    // A edição ainda será integrada ao PUT.
     if (editandoId !== null) {
-
       setContatos((anteriores) =>
         anteriores.map((contato) =>
           contato.id === editandoId
@@ -198,24 +203,53 @@ export default function RedeApoio({ navigation }) {
         )
       );
 
-      mostrarAviso('Sucesso', 'Contato atualizado na tela!');
+      mostrarAviso(
+        'Sucesso',
+        'Contato atualizado na tela!'
+      );
 
-    } else {
+      limparFormulario();
+      return;
+    }
 
-      const novoContato = {
-        id: `${Date.now()}-${Math.random()}`,
-        ...dados,
-      };
+    // Cadastro permanente utilizando a API.
+    try {
+      const resposta = await fetch(`${API_URL}/contatos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados),
+      });
 
+      if (!resposta.ok) {
+        throw new Error('Não foi possível cadastrar o contato.');
+      }
+
+      // A API retorna o contato com seu ID numérico.
+      const novoContato = await resposta.json();
+
+      // Atualiza a lista na tela.
       setContatos((anteriores) => [
         ...anteriores,
         novoContato,
       ]);
 
-      mostrarAviso('Sucesso', 'Contato cadastrado na tela!');
-    }
+      limparFormulario();
 
-    limparFormulario();
+      mostrarAviso(
+        'Sucesso',
+        'Contato cadastrado com sucesso!'
+      );
+
+    } catch (erro) {
+      console.error('Erro ao cadastrar contato:', erro);
+
+      mostrarAviso(
+        'Erro',
+        'Não foi possível salvar o contato na API. Verifique se o servidor está funcionando.'
+      );
+    }
   }
 
   // ============================================================

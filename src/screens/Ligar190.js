@@ -1,8 +1,11 @@
 // ============================================================
-//  "Ligar 190".
+//  LIGAR 190
 //
-// Mostra o canal oficial (Central da Policia) e o botão
-// "LIGAR AGORA", que abre o discador do celular já com o número 190.
+// Tela responsável por apresentar o canal de emergência
+// da Polícia Militar, disponibilizando informações sobre
+// o serviço e um botão para abrir o discador com o número 190.
+//
+// A chamada depende dos recursos disponíveis no dispositivo.
 // ============================================================
 
 

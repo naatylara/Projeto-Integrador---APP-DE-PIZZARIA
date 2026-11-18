@@ -1,8 +1,12 @@
 // ============================================================
-// TELA 11 do protótipo da Entrega 1: "Ligar 180".
+// LIGAR 180
 //
-// Mostra o canal oficial (Central de Atendimento à Mulher) e o botão
-// "LIGAR AGORA", que abre o discador do celular já com o número 180.
+// Tela responsável por apresentar o canal oficial de
+// atendimento à mulher em situação de violência.
+//
+// Disponibiliza informações sobre a Central de Atendimento
+// à Mulher e um botão para iniciar a chamada telefônica
+// por meio do discador disponível no dispositivo.
 // ============================================================
 
 import React from 'react';

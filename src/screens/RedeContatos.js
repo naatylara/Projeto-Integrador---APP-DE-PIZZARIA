@@ -1,14 +1,15 @@
 
 // ============================================================
-// TELA: REDE DE APOIO
+// REDE DE APOIO
 //
-// A tela faz parte da área de apoio camuflada do aplicativo.
+// Tela responsável pelo gerenciamento dos contatos de confiança
+// cadastrados na Área de Apoio.
 //
-// ENTREGA 4 - FUNCIONALIDADES:
-// GET: consultar contatos cadastrados.
-// POST: cadastrar novos contatos.
-// PUT: atualizar contatos existentes.
-// DELETE: excluir contatos.
+// Permite consultar, cadastrar, editar e excluir contatos
+// por meio da integração com a API Node.js/Express.
+//
+// Os contatos são organizados por prioridade e possuem
+// informações de nome, telefone e relação com a usuária.
 // 
 // ============================================================
 
@@ -580,10 +581,6 @@ export default function RedeApoio({ navigation }) {
               Pessoas de confiança que você pode contatar rapidamente.
             </Text>
 
-            <Text style={estilos.aviso}>
-              Protótipo acadêmico: utilize apenas informações fictícias.
-            </Text>
-
             <Text style={estilos.subtitulo}>
               Meus contatos de confiança
             </Text>
@@ -743,12 +740,6 @@ const estilos = StyleSheet.create({
     fontSize: 14,
     color: cores.texto,
     marginBottom: 10,
-  },
-
-  aviso: {
-    fontSize: 12,
-    color: cores.cinza,
-    marginBottom: 16,
   },
 
   subtitulo: {

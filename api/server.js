@@ -1,8 +1,12 @@
 // ============================================================
-// ENTREGA 4: API REST do aplicativo Pede Pizza Já.
+// API REST
 //
-// Utiliza Node.js e Express para receber requisições do app.
-// Os dados serão armazenados em arquivos JSON.
+// Servidor desenvolvido com Node.js e Express.
+//
+// Responsável pelo gerenciamento dos usuários, contatos
+// de apoio e alertas SOS do aplicativo.
+//
+// Os dados são armazenados em arquivos JSON.
 // ============================================================
 
 const express = require('express');
@@ -47,10 +51,10 @@ app.use(express.json());
 // Rota de teste para verificar se a API está funcionando.
 app.get('/', (req, res) => {
   res.json({
-    mensagem: 'API Pede Pizza Já funcionando!',
-    entrega: 4
+    mensagem: 'API Pede Pizza Já funcionando!'
   });
 });
+
 
  // ============================================================
  // GET /usuarios: consultar os usuários cadastrados.
@@ -333,15 +337,13 @@ app.delete('/contatos/:id', (req, res) => {
   }
 });
 
-
  // ============================================================
- // ENTREGA 4 - ALERTAS SOS
- //
- // POST /alertas: registra um acionamento SOS fictício.
- // GET /alertas: consulta os alertas cadastrados.
- //
- // Cada alerta pertence a um usuário existente.
- // Os dados são salvos em alertas.json.
+  // POST /alertas: registra um alerta SOS.
+  // GET /alertas: consulta os alertas cadastrados.
+  // PUT /alertas/:id: atualiza o status de um alerta.
+  //
+  // Cada alerta está vinculado a um usuário cadastrado.
+  // Os registros são armazenados no arquivo alertas.json.
  // ============================================================
 
 

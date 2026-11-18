@@ -1,14 +1,16 @@
 // ============================================================
-// DADOS SIMULADOS do cardápio.
+// DADOS DO CARDÁPIO
 //
-// Para entrega 2 os dados que está sendo usados são simulados. 
-// A API e o banco de dados reais só entram na Entrega 4, quando esta lista passa a vir do servidor.
-// As pizzas seguem a entidade PIZZA do DER da Entrega 1 (id, nome,
-// descrição e preço); categoria, imagem e "especial" são extras só
-// da tela.
+// Armazena as informações das pizzas exibidas no aplicativo,
+// incluindo nome, descrição, preço, categoria e imagem.
 //
-// Também ficam aqui as regras de preço (taxa de entrega e acréscimo
-// por tamanho) e a função que formata o preço em reais.
+// Define os tamanhos disponíveis, a taxa de entrega
+// e as regras de cálculo dos preços.
+//
+// Contém também a função para formatar valores em reais.
+//
+// Os dados do cardápio são fictícios e armazenados localmente,
+// sem necessidade de integração com a API.
 // ============================================================
 
 
@@ -69,7 +71,7 @@ export const pizzas = [
   {
     id: 4,
     nome: 'Rúcula Especial',
-    descricao: 'Molho de tomate, mussarela, requeijão e pepperoni',
+    descricao: 'Molho de tomate, mussarela, rúcula e requeijão',
     preco: 55.9,
     categoria: 'Especiais',
     especial: true, // estrela no card + atalho oculto (toque longo)

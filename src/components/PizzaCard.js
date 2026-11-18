@@ -1,10 +1,16 @@
 // ============================================================
-// COMPONENTE: card de uma pizza na lista do Cardápio.
+// COMPONENTE PIZZA CARD
 //
-// Props: "pizza" (os dados), "onAdicionar" (botão Adicionar),
-// "onPress" (toque curto) e "onLongPress" (toque longo). O card só
-// mostra os dados e avisa quem o usa; quem decide o que fazer em cada
-// toque é a tela do Cardápio.
+// Exibe as informações de cada pizza no cardápio,
+// incluindo imagem, nome, descrição, preço e botão Adicionar.
+//
+// Recebe as propriedades:
+// pizza: dados da pizza.
+// onAdicionar: adiciona a pizza ao carrinho.
+// onPress: executa a ação do toque curto.
+// onLongPress: executa a ação do toque prolongado.
+//
+// As ações são controladas pela tela do Cardápio.
 // ============================================================
 
 

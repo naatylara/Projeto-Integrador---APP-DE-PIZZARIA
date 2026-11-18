@@ -1,21 +1,24 @@
 // ============================================================
-// CARRINHO COMPARTILHADO entre as telas.
+// CONTEXTO DO CARRINHO
 //
-// O carrinho precisa ser lido e alterado por várias telas (Cardápio,
-// Detalhes, Carrinho e Finalizar). Em vez de passar props de tela em
-// tela, o estado fica guardado aqui, num Context (createContext), e
-// cada tela o acessa com o hook useCarrinho().
+// Gerencia e compartilha os dados do carrinho entre as telas
+// do aplicativo utilizando Context API e useState.
 //
-// O estado em si é um useState comum: uma lista "itens", em que cada
-// item tem { pizza, tamanho, quantidade }. Os dados são simulados e
-// ficam só na memória; não vão para a API nesta etapa.
+// Permite adicionar pizzas, alterar quantidades, remover
+// itens e limpar o carrinho.
+//
+// Calcula automaticamente a quantidade de itens,
+// o subtotal e o valor total com a taxa de entrega.
+//
+// Os pedidos são fictícios e os dados do carrinho
+// permanecem armazenados temporariamente na memória.
 // ============================================================
 
 
 import React, { createContext, useContext, useState } from 'react';
 import { precoUnitario, taxaEntrega } from '../data/pizzas';
 
-// O "canal" por onde o carrinho é compartilhado.
+// Cria o contexto responsável por compartilhar os dados do carrinho.
 const CarrinhoContext = createContext();
 
 // Componente que guarda o estado e o entrega a todos os filhos (children).

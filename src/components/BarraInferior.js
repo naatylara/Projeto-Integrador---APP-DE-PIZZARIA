@@ -1,10 +1,14 @@
 // ============================================================
-// COMPONENTE: barra inferior com Início, Cardápio e Pedidos
-// (as 3 abas do protótipo da Entrega 1).
+// COMPONENTE BARRA INFERIOR
 //
-// Recebe "navigation" (para trocar de tela) e "ativa" (a rota da tela
-// atual, que fica em negrito). É um componente reutilizável: as telas
-// só o colocam no final do layout.
+// Exibe a barra de navegação com três opções:
+// Início, Cardápio e Pedidos.
+//
+// Recebe as propriedades:
+// navigation: permite navegar entre as telas.
+// ativa: identifica a tela atual e destaca seu nome.
+//
+// Componente reutilizável nas telas principais do aplicativo.
 // ============================================================
 
 import React from 'react';

@@ -1,8 +1,14 @@
 // ============================================================
-// COMPONENTE: cabeçalho padrão das telas (seta de voltar + título).
+// COMPONENTE CABEÇALHO
 //
-// Props: "titulo" (texto), "navigation" (para o goBack) e "direita"
-// (um elemento opcional no canto direito, como o ícone do carrinho).
+// Exibe o cabeçalho das telas com botão de voltar e título.
+//
+// Recebe as propriedades:
+// titulo: texto exibido no cabeçalho.
+// navigation: permite retornar à tela anterior.
+// direita: elemento opcional exibido no lado direito.
+//
+// Componente reutilizável nas telas do aplicativo.
 // ============================================================
 
 import React from 'react';

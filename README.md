@@ -89,6 +89,7 @@ O painel apresenta os alertas SOS registrados e atualiza as informações automa
 
 - Kanban - https://trello.com/b/drFd5boT/projeto-integrador-app-de-pizzaria
 - [Uso de IA](USO_IA.md)
+- [Kickoff e Planejamento](docs/Kickoff_e_Planejamento.pdf)
 - [Matriz de papéis](docs/matriz-papeis.md)
 
 ## Autoria

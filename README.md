@@ -36,42 +36,42 @@ O aplicativo apresenta uma interface de pizzaria, permitindo visualizar o cardá
 - [x] Painel de monitoramento com atualização automática dos alertas
 - [x] Atualização do status dos alertas no painel
 
+
 ## Como executar
 
 Instale as dependências do projeto:
 
+```bash
 npm install
+```
 
 Inicie a API em um terminal:
 
+```bash
 node api/server.js
+```
 
-A API será executada na porta 3333.
+A API será executada na porta **3333**.
 
 Para consultar os contatos cadastrados, acesse:
-
 http://localhost:3333/contatos
 
 Em outro terminal, inicie o aplicativo:
 
+```bash
 npx expo start --web
+```
 
 O aplicativo será aberto no navegador.
-
 Para utilizar o Expo Go em um celular, o computador e o dispositivo devem estar na mesma rede Wi-Fi, e o endereço da API deve estar configurado para ser acessível pelo celular.
 
-Acesso à área de apoio:
+**Acesso à área de apoio:**
+- Abra o Cardápio.
+- Pressione a pizza **Rúcula Especial** por aproximadamente 1,5 segundo.
+- Informe o PIN de demonstração `1234` na versão web.
 
-Abra o Cardápio.
-
-Pressione a pizza Rúcula Especial por aproximadamente 1,5 segundo.
-
-Informe o PIN de demonstração 1234 na versão web.
-
-Painel de monitoramento:
-
-Com a API funcionando, abra o arquivo painel/index.html no navegador.
-
+**Painel de monitoramento:**
+Com a API funcionando, abra o arquivo `painel/index.html` no navegador.
 O painel apresenta os alertas SOS registrados e atualiza as informações automaticamente a cada cinco segundos.
 
 ## Estrutura do repositório

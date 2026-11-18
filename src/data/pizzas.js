@@ -44,6 +44,7 @@ export function pedacosDoTamanho(nomeTamanho) {
 // A "imagem" usa require() porque é um arquivo local da pasta assets.
 // "especial: true" marca a pizza que tem a estrela e o atalho oculto (Rúcula Especial).
 export const pizzas = [
+  
   {
     id: 1,
     nome: 'Calabresa',
@@ -65,19 +66,10 @@ export const pizzas = [
     nome: 'Pepperoni',
     descricao: 'Molho de tomate, mussarela, requeijão e pepperoni',
     preco: 55.9,
-    categoria: '+ Pedidas',   
+    categoria: '+ Pedidas',
     imagem: require('../../assets/pizzas/pepperoni.png'),
   },
   {
-    id: 4,
-    nome: 'Rúcula Especial',
-    descricao: 'Molho de tomate, mussarela, rúcula e requeijão',
-    preco: 55.9,
-    categoria: 'Especiais',
-    especial: true, // estrela no card + atalho oculto (toque longo)
-    imagem: require('../../assets/pizzas/rucula.png'),
-  },
-    {
     id: 5,
     nome: 'Portuguesa',
     descricao: 'Molho de tomate, mussarela, presunto, ovo, cebola e azeitona',
@@ -90,8 +82,41 @@ export const pizzas = [
     nome: 'Quatro Queijos',
     descricao: 'Molho de tomate, mussarela, provolone, catupiry e gorgonzola',
     preco: 52.9,
-    categoria: '+ Pedidas',   
+    categoria: '+ Pedidas',
     imagem: require('../../assets/pizzas/quatroqueijos.png'),
+  },
+   {
+    id: 4,
+    nome: 'Rúcula Especial',
+    descricao: 'Molho de tomate, mussarela, rúcula e requeijão',
+    preco: 55.9,
+    categoria: 'Especiais',
+    especial: true, // Mantém o acesso oculto por toque longo.
+    imagem: require('../../assets/pizzas/rucula.png'),
+  },
+  {
+    id: 14,
+    nome: 'Camarão Especial',
+    descricao: 'Molho de tomate, mussarela, camarão, alho-poró e requeijão',
+    preco: 75.9,
+    categoria: 'Especiais',
+    imagem: require('../../assets/pizzas/camarao.png'),
+  },
+  {
+    id: 13,
+    nome: 'Parma Especial',
+    descricao: 'Molho de tomate, mussarela, presunto de parma, rúcula, tomate-cereja e parmesão',
+    preco: 59.9,
+    categoria: 'Especiais',
+    imagem: require('../../assets/pizzas/parma.png'),
+  },
+  {
+    id: 15,
+    nome: 'Quatro Queijos Especial',
+    descricao: 'Molho de tomate, mussarela, provolone, catupiry, gorgonzola, nozes e mel',
+    preco: 75.9,
+    categoria: 'Especiais',
+    imagem: require('../../assets/pizzas/quatroqueijoespecial.png'),
   },
   {
     id: 7,
@@ -118,14 +143,6 @@ export const pizzas = [
     imagem: require('../../assets/pizzas/churros.jpg'),
   },
   {
-    id: 10,
-    nome: 'Morango com Nutella',
-    descricao: 'Morango com cobertura de Nutella',
-    preco: 44.9,
-    categoria: 'Doces',
-    imagem: require('../../assets/pizzas/morangoenutella.jpg'),
-  },
-  {
     id: 11,
     nome: 'M&M',
     descricao: 'Chocolate ao leite coberto com M&Ms',
@@ -134,13 +151,22 @@ export const pizzas = [
     imagem: require('../../assets/pizzas/mem.jpg'),
   },
   {
-    id: 12, 
+    id: 10,
+    nome: 'Morango com Nutella',
+    descricao: 'Morango com cobertura de Nutella',
+    preco: 44.9,
+    categoria: 'Doces',
+    imagem: require('../../assets/pizzas/morangoenutella.jpg'),
+  },
+  {
+    id: 12,
     nome: 'Prestígio',
     descricao: 'Chocolate ao leite coberto com coco ralado',
     preco: 44.9,
     categoria: 'Doces',
     imagem: require('../../assets/pizzas/prestigio.jpg'),
   },
+
 ];  
 
 // Transforma o número 45.9 no texto "R$45,90":

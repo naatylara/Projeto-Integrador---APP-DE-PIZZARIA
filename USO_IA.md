@@ -5,7 +5,7 @@
 | Ferramenta | Para que uso |
 |---|---|
 | Claude  | Planejamento, explicações e sugestões de código |
-| ChatGPT | Apoio nas etapas iniciais do projeto |
+| ChatGPT | Apoio no desenvolvimento, revisão de código, integração com API, correção de erros, testes e documentação final|
 
 ## Regras que sigo
 
@@ -13,6 +13,8 @@
 2. Testo tudo antes de fazer commit.
 3. Nenhum dado real de vítimas; os dados de teste são fictícios.
 4. Registro aqui cada uso relevante.
+5. Comparo as sugestões da IA com os conteúdos e exemplos apresentados pelo professor.
+6. Reviso e adapto as sugestões antes de incluí-las no projeto.
 
 ## Registro de usos
 
@@ -34,6 +36,26 @@
 | 12/10/2026 | Claude | Ajuste visual da tela de PIN: remoção do cadeado do topo e teclado adaptado à altura da tela, porque a tela aparecia cortada | `src/screens/Pin.js` | Conferi no navegador e no celular se o teclado e o botão verde aparecem inteiros |
 | 19/10/2026 | Claude | Correção da tela de PIN: ramo do PIN errado (aviso "PIN incorreto"), limpeza dos dígitos ao entrar e remoção de recursos que não foram vistos em aula | `src/screens/Pin.js` | Testei PIN certo e errado e a volta ao cardápio |
 | 23/10/2026 | Claude | Comentários explicativos escritos em todas as telas e componentes | `src/` | Li os comentários e ajustei o que não correspondia ao código |
+| 09/11/2026 | ChatGPT | Apoio na revisão das telas, componentes e funcionalidades do aplicativo | `src/screens/`, `src/components/` e `App.js` | Comparei as alterações com a estrutura existente e revisei a navegação |
+| 09/11/2026 | ChatGPT | Revisão da tela de PIN e da funcionalidade Ligar 190 | `Pin.js` e tela Ligar 190 | Conferi a navegação e as funcionalidades |
+| 16/11/2026 | ChatGPT | Apoio na construção da tela Rede de Apoio e organização dos contatos | `src/screens/RedeContatos.js` | Conferi os campos e a apresentação da tela |
+| 16/11/2026 | ChatGPT | Apoio na implementação do CRUD da Rede de Apoio | Rede de Apoio | Revisei as operações de cadastro, consulta, edição e exclusão |
+| 16/11/2026 | ChatGPT | Apoio na criação da estrutura da API e dos arquivos JSON | `api/server.js` e arquivos JSON | Conferi a organização do servidor e o armazenamento dos dados |
+| 16/11/2026 | ChatGPT | Apoio na implementação das rotas POST, GET por ID, PUT e DELETE de contatos | `api/server.js` | Conferi os endpoints e as respostas do servidor |
+| 16/11/2026 | ChatGPT | Revisão dos comentários das telas novas | `src/screens/` | Conferi as explicações e sua correspondência com o código |
+| 17/11/2026 | ChatGPT | Integração das operações POST, PUT e DELETE de contatos com a API | Rede de Apoio e API REST | Testei as operações e a atualização dos contatos |
+| 17/11/2026 | ChatGPT | Correção da máscara de telefone e do retorno da Rede de Apoio para a Área de Apoio | Tela Rede de Apoio | Testei a digitação e a navegação |
+| 17/11/2026 | ChatGPT | Organização visual da tela de contatos | Rede de Apoio | Conferi os campos, botões e apresentação |
+| 17/11/2026 | ChatGPT | Apoio na implementação da API de alertas SOS, incluindo cadastro, consulta e atualização de status | `api/server.js` | Conferi as rotas e os registros dos alertas |
+| 17/11/2026 | ChatGPT | Apoio na criação do painel SOS com pesquisa e gerenciamento dos alertas | `painel/index.html` | Conferi a listagem, a pesquisa e a atualização dos status |
+| 17/11/2026 | ChatGPT | Integração do alerta SOS com a API e o dashboard | Área de Apoio, API e painel | Testei o envio dos alertas e a apresentação no painel |
+| 17/11/2026 | ChatGPT | Revisão e atualização dos comentários do aplicativo | `src/screens/` e `src/components/` | Conferi os comentários e preservei as funcionalidades |
+| 18/11/2026 | ChatGPT | Revisão dos comentários e ajustes finais nos componentes e arquivos do projeto | `src/`, `api/` e arquivos de configuração | Comparei as descrições com o código e mantive a estrutura existente |
+| 18/11/2026 | ChatGPT | Organização das pizzas por categorias e ordem alfabética | `src/data/pizzas.js` | Conferi os nomes, preços, imagens e mantive o acesso oculto na Rúcula Especial |
+| 18/11/2026 | ChatGPT | Apoio na conferência dos requisitos da entrega final e revisão da documentação | Projeto Integrador | Comparei os requisitos com o documento orientador |
+| 18/11/2026 | ChatGPT | Atualização do README com funcionalidades, tecnologias e instruções de execução | `README.md` | Mantive o padrão original e conferi as informações do projeto |
+| 18/11/2026 | ChatGPT | Atualização do registro de uso de Inteligência Artificial com base no histórico de commits | `USO_IA.md` | Comparei as atividades com as datas registradas no Git |
+
 
 ## Observações
 
@@ -41,6 +63,14 @@ A IA ajudou a gerar a estrutura e o código inicial das telas a partir do meu pr
 O que foi feito por mim: o protótipo no Canva, a escolha do disfarce, a criação das
 imagens dos sabores, os preços e categorias, os testes de cada tela e a organização do
 repositório e do Kanban.
+O projeto foi desenvolvido individualmente, utilizando as ferramentas de IA como apoio ao aprendizado e à resolução de problemas.
+As sugestões foram analisadas e adaptadas conforme os conteúdos apresentados na disciplina de Desenvolvimento de Aplicativos Móveis.
 
-Pontos de atenção que já identifiquei:
-- O PIN (`1234`) é fixo apenas na Entrega 2. Na Entrega 4 ele virá da tabela USUARIO, pela API.
+Pontos de atenção:
+
+- PIN 1234 é fixo na versão web de demonstração e não representa um mecanismo de autenticação seguro para uso real.
+- Os pedidos realizados no aplicativo são fictícios e não geram compras ou pagamentos reais.
+- Os alertas SOS são registrados na API e apresentados no painel acadêmico, sem acionamento automático da polícia.
+- Os dados utilizados para testes são fictícios e armazenados localmente.
+- O projeto utiliza arquivos JSON para persistência dos dados da API.
+- O aplicativo foi desenvolvido exclusivamente para fins acadêmicos e de conscientização sobre a violência contra a mulher.

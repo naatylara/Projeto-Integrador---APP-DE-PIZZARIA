@@ -15,16 +15,15 @@ Tema: *Violência contra a Mulher — App de Apoio Camuflado*.
 
 ## Sobre o projeto
 
-O aplicativo se apresenta como um app comum de pedidos de pizzaria. Um item do
-cardápio (toque longo) funciona como atalho oculto que leva a uma área de apoio
-protegida por PIN, com canais oficiais de ajuda e uma rede de contatos de
-confiança. O botão **Sair Rápido** volta imediatamente à fachada.
+O aplicativo apresenta uma interface de pizzaria, permitindo visualizar o cardápio, selecionar pizzas, adicionar produtos ao carrinho e simular a finalização de pedidos. Por trás dessa interface existe uma área de apoio destinada à demonstração de recursos de segurança e acesso discreto a canais de ajuda. A área de apoio possui canais oficiais de ajuda, uma rede de contatos de confiança e um botão SOS que envia alertas de demonstração para um painel de monitoramento.
 
 ## Tecnologias
 
 - **Mobile:** React Native + Expo
+- **Linguagem:** JavaScript
 - **API:** Node.js + Express
-- **Banco de dados:** PostgreSQL
+- **Armazenamento de dados:** Arquivos JSON
+- **Painel de monitoramento:** HTML, CSS e JavaScript
 
 ## Funcionalidades
 
@@ -32,32 +31,65 @@ confiança. O botão **Sair Rápido** volta imediatamente à fachada.
 - [x] Acesso à área de apoio via atalho oculto + PIN
 - [x] Tela de apoio com Ligue 180 e 190
 - [x] Saída rápida
-- [ ] CRUD de Rede de Apoio (contatos de confiança e prioridade)
-- [ ] Integração com a API
+- [x] CRUD de Rede de Apoio (contatos de confiança e prioridade)
+- [x] Integração com a API
+- [x] Painel de monitoramento com atualização automática dos alertas
+- [x] Atualização do status dos alertas no painel
 
 ## Como executar
 
-```bash
-npm install
-npx expo start
-```
+Instale as dependências do projeto:
 
-Escaneie o QR code com o app Expo Go (celular e computador na mesma rede Wi-Fi)
-ou pressione `w` para abrir no navegador.
+npm install
+
+Inicie a API em um terminal:
+
+node api/server.js
+
+A API será executada na porta 3333.
+
+Para consultar os contatos cadastrados, acesse:
+
+http://localhost:3333/contatos
+
+Em outro terminal, inicie o aplicativo:
+
+npx expo start --web
+
+O aplicativo será aberto no navegador.
+
+Para utilizar o Expo Go em um celular, o computador e o dispositivo devem estar na mesma rede Wi-Fi, e o endereço da API deve estar configurado para ser acessível pelo celular.
+
+Acesso à área de apoio:
+
+Abra o Cardápio.
+
+Pressione a pizza Rúcula Especial por aproximadamente 1,5 segundo.
+
+Informe o PIN de demonstração 1234 na versão web.
+
+Painel de monitoramento:
+
+Com a API funcionando, abra o arquivo painel/index.html no navegador.
+
+O painel apresenta os alertas SOS registrados e atualiza as informações automaticamente a cada cinco segundos.
 
 ## Estrutura do repositório
 
 - `src/` — código do app (`screens`, `components`, `context`, `data`, `utils`)
 - `assets/` — imagens
 - `docs/` — matriz de papéis e protótipos de tela
-- `api/` — back-end (será criado na Entrega 4)
+- `api/` — back-end Node.js com Express e armazenamento em JSON
+- `painel/` — painel web de monitoramento dos alertas SOS
+- `App.js` — navegação principal do aplicativo
+- `index.js` — inicialização do aplicativo
+- `USO_IA.md` — documentação do uso de Inteligência Artificial
 
 ## Documentos
 
 - Kanban - https://trello.com/b/drFd5boT/projeto-integrador-app-de-pizzaria
 - [Uso de IA](USO_IA.md)
 - [Matriz de papéis](docs/matriz-papeis.md)
-
 
 ## Autoria
 

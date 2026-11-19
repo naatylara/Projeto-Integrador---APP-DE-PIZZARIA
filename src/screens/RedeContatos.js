@@ -40,7 +40,6 @@ export default function RedeApoio({ navigation }) {
   // ============================================================
   // MÁSCARA AUTOMÁTICA DO TELEFONE
   //
-  // Exemplo:
   // 43999999999 -> (43)9.9999-9999
   // ============================================================
 
@@ -107,7 +106,6 @@ export default function RedeApoio({ navigation }) {
   //
   // A prioridade é usada apenas internamente.
   // Quanto menor o número, mais acima o contato aparece.
-  // A prioridade não é exibida nos cartões.
   // ============================================================
 
   const contatosOrdenados = [...contatos].sort((a, b) => {

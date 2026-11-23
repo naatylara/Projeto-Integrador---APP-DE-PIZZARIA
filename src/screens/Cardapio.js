@@ -46,8 +46,12 @@ export default function Cardapio({ navigation }) {
 
   return (
     <SafeAreaView style={estilos.tela}>
-      <Cabecalho titulo="Cardápio" navigation={navigation} direita={iconeCarrinho} />
-
+      <Cabecalho
+        titulo="Cardápio"
+        navigation={navigation}
+        direita={iconeCarrinho}
+        mostrarVoltar={false}
+      />
       <View style={estilos.filtros}>
         {categorias.map((c) => (
           <TouchableOpacity
@@ -78,7 +82,7 @@ export default function Cardapio({ navigation }) {
             // Toque longo: só existe se item.especial for true; nas outras pizzas
             // onLongPress é undefined e nada acontece (por isso o atalho não aparece).
             // Atalho oculto: toque longo na pizza especial abre a tela de PIN
-            onLongPress={item.especial ? () => navigation.navigate('Pin') : undefined}
+            onLongPress={item.id === 4 && item.especial === true? () => navigation.navigate('Pin'): undefined}
           />
         )}
       />

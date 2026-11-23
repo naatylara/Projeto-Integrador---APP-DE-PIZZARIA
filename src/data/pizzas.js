@@ -40,9 +40,12 @@ export function pedacosDoTamanho(nomeTamanho) {
   return t ? t.pedacos : 0;
 }
 
-// Lista de pizzas. Cada item é um objeto com os dados que as telas mostram.
-// A "imagem" usa require() porque é um arquivo local da pasta assets.
-// "especial: true" marca a pizza que tem a estrela e o atalho oculto (Rúcula Especial).
+// Lista de pizzas. Cada item contém os dados exibidos no cardápio.
+// A propriedade "categoria: 'Especiais'" identifica as pizzas
+// que recebem uma estrela visual no PizzaCard.
+//
+// A propriedade "especial: true" é exclusiva da Rúcula Especial
+// e controla somente o acesso oculto por toque prolongado.
 export const pizzas = [
   
   {

@@ -34,7 +34,7 @@ export default function PizzaCard({ pizza, onAdicionar, onPress, onLongPress }) 
       <View style={estilos.info}>
         <Text style={estilos.nome}>
           {/* A estrela só aparece se a pizza tiver especial: true. */}
-          {pizza.nome} {pizza.especial ? '⭐' : ''}
+          {pizza.nome} {pizza.categoria === 'Especiais' ? '⭐' : ''}
         </Text>
         <Text style={estilos.descricao}>{pizza.descricao}</Text>
         <View style={estilos.rodape}>

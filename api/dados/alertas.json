@@ -15,7 +15,7 @@
     "dataHora": "2026-11-17T14:46:38.975Z",
     "latitude": -23.2765,
     "longitude": -51.278,
-    "status": "Em atendimento"
+    "status": "Concluído"
   },
   {
     "id": 3,
@@ -33,7 +33,7 @@
     "dataHora": "2026-11-17T16:01:45.962Z",
     "latitude": -23.28594515183747,
     "longitude": -51.25957359435054,
-    "status": "Em atendimento"
+    "status": "Concluído"
   },
   {
     "id": 5,
@@ -60,7 +60,7 @@
     "dataHora": "2026-11-18T14:16:40.802Z",
     "latitude": -23.28593646299302,
     "longitude": -51.2596342652031,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 8,
@@ -69,7 +69,7 @@
     "dataHora": "2026-11-19T20:21:12.132Z",
     "latitude": -23.285956417683206,
     "longitude": -51.259658760872995,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 9,
@@ -78,7 +78,7 @@
     "dataHora": "2026-11-19T22:12:48.783Z",
     "latitude": -23.285956417683206,
     "longitude": -51.259658760872995,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 10,
@@ -87,7 +87,7 @@
     "dataHora": "2026-11-19T22:35:54.114Z",
     "latitude": -23.285956417683206,
     "longitude": -51.259658760872995,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 11,
@@ -96,7 +96,7 @@
     "dataHora": "2026-11-19T22:37:17.600Z",
     "latitude": -23.285956417683206,
     "longitude": -51.259658760872995,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 12,
@@ -105,7 +105,7 @@
     "dataHora": "2026-11-19T22:42:20.316Z",
     "latitude": -23.285956417683206,
     "longitude": -51.259658760872995,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 13,
@@ -114,7 +114,7 @@
     "dataHora": "2026-11-23T00:15:00.552Z",
     "latitude": -23.294684904044008,
     "longitude": -51.26017712644828,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 14,
@@ -123,7 +123,7 @@
     "dataHora": "2026-11-23T00:15:20.002Z",
     "latitude": -23.294684904044008,
     "longitude": -51.26017712644828,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 15,
@@ -132,7 +132,7 @@
     "dataHora": "2026-11-23T00:21:49.752Z",
     "latitude": -23.294684904044008,
     "longitude": -51.26017712644828,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 16,
@@ -141,7 +141,7 @@
     "dataHora": "2026-11-23T00:22:05.807Z",
     "latitude": -23.294684904044008,
     "longitude": -51.26017712644828,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 17,
@@ -150,13 +150,22 @@
     "dataHora": "2026-11-23T00:25:33.273Z",
     "latitude": -23.294684904044008,
     "longitude": -51.26017712644828,
-    "status": "Novo"
+    "status": "Concluído"
   },
   {
     "id": 18,
     "usuarioId": 1,
     "nomeUsuario": "Usuario Teste",
     "dataHora": "2026-11-23T00:25:38.655Z",
+    "latitude": -23.294684904044008,
+    "longitude": -51.26017712644828,
+    "status": "Concluído"
+  },
+  {
+    "id": 19,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-23T01:44:21.224Z",
     "latitude": -23.294684904044008,
     "longitude": -51.26017712644828,
     "status": "Novo"

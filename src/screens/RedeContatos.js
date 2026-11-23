@@ -13,23 +13,26 @@
 // 
 // ============================================================
 
-import React, { useState, useEffect } from 'react';
 
-import {  View,  Text,  TextInput,  TouchableOpacity,  FlatList,  Alert,  StyleSheet,  Platform,  Linking, } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  StyleSheet,
+  Linking,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../theme';
 
-
-// Endereço da API
+// API Node.js / Express
 const API_URL = 'http://localhost:3333';
 
 export default function RedeApoio({ navigation }) {
-
-  // ============================================================
-  // ESTADOS DA TELA
-  // ============================================================
-
   const [contatos, setContatos] = useState([]);
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
@@ -37,24 +40,26 @@ export default function RedeApoio({ navigation }) {
   const [prioridade, setPrioridade] = useState('');
   const [editandoId, setEditandoId] = useState(null);
 
-  // ============================================================
-  // MÁSCARA AUTOMÁTICA DO TELEFONE
-  //
-  // 43999999999 -> (43)9.9999-9999
-  // ============================================================
+  // Estados dos modais personalizados
+  const [modalAviso, setModalAviso] = useState({
+    visivel: false,
+    titulo: '',
+    mensagem: '',
+  });
+  const [contatoParaExcluir, setContatoParaExcluir] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
+
+  // =====================================================
+  // FORMATAÇÃO DO TELEFONE
+  // =====================================================
 
   function formatarTelefone(valor) {
     const numeros = String(valor || '')
       .replace(/\D/g, '')
       .slice(0, 11);
 
-    if (numeros.length === 0) {
-      return '';
-    }
-
-    if (numeros.length <= 2) {
-      return `(${numeros}`;
-    }
+    if (!numeros.length) return '';
+    if (numeros.length <= 2) return `(${numeros}`;
 
     if (numeros.length <= 3) {
       return `(${numeros.slice(0, 2)})${numeros.slice(2)}`;
@@ -67,11 +72,9 @@ export default function RedeApoio({ navigation }) {
     return `(${numeros.slice(0, 2)})${numeros.slice(2, 3)}.${numeros.slice(3, 7)}-${numeros.slice(7)}`;
   }
 
-  // ============================================================
-  // GET - CONSULTAR CONTATOS NA API
-  //
-  // Ao abrir a tela, os contatos são carregados do servidor.
-  // ============================================================
+  // =====================================================
+  // GET - CONSULTAR CONTATOS
+  // =====================================================
 
   useEffect(() => {
     let ativo = true;
@@ -89,7 +92,6 @@ export default function RedeApoio({ navigation }) {
         if (ativo) {
           setContatos(dados);
         }
-
       } catch (erro) {
         console.error('Erro ao carregar contatos:', erro);
       }
@@ -101,27 +103,23 @@ export default function RedeApoio({ navigation }) {
       ativo = false;
     };
   }, []);
-  // ============================================================
-  // ORDENAÇÃO AUTOMÁTICA DOS CONTATOS
-  //
-  // A prioridade é usada apenas internamente.
-  // Quanto menor o número, mais acima o contato aparece.
-  // ============================================================
+
+  // =====================================================
+  // ORDENAÇÃO DOS CONTATOS
+  // =====================================================
 
   const contatosOrdenados = [...contatos].sort((a, b) => {
     const diferenca =
       Number(a.prioridade) - Number(b.prioridade);
 
-    if (diferenca !== 0) {
-      return diferenca;
-    }
+    if (diferenca !== 0) return diferenca;
 
     return Number(a.id) - Number(b.id);
   });
 
-  // ============================================================
+  // =====================================================
   // LIMPAR FORMULÁRIO
-  // ============================================================
+  // =====================================================
 
   function limparFormulario() {
     setNome('');
@@ -131,45 +129,42 @@ export default function RedeApoio({ navigation }) {
     setEditandoId(null);
   }
 
-  // ============================================================
-  // MENSAGENS DE AVISO
-  //
-  // Navegador: window.alert
-  // Celular: Alert.alert
-  // ============================================================
+  // =====================================================
+  // MODAL PERSONALIZADO DE AVISOS
+  // Substitui window.alert e Alert.alert
+  // =====================================================
 
   function mostrarAviso(titulo, mensagem) {
-    if (Platform.OS === 'web') {
-      window.alert(`${titulo}\n${mensagem}`);
-    } else {
-      Alert.alert(titulo, mensagem);
-    }
+    setModalAviso({
+      visivel: true,
+      titulo,
+      mensagem,
+    });
   }
 
-  // ============================================================
-  // POST E PUT - CADASTRAR OU EDITAR CONTATO
-  //
-  // Quando editandoId é null, cadastra um novo contato.
-  // Quando existe editandoId, atualiza o contato na API.
-  // ============================================================
+  function fecharAviso() {
+    setModalAviso({
+      visivel: false,
+      titulo: '',
+      mensagem: '',
+    });
+  }
+
+  // =====================================================
+  // POST E PUT - CADASTRAR OU EDITAR
+  // =====================================================
 
   async function salvarContato() {
-
-    // Verifica se todos os campos foram preenchidos.
     if (
       !nome.trim() ||
       !telefone.trim() ||
       !relacao.trim() ||
       !prioridade.trim()
     ) {
-      mostrarAviso(
-        'Atenção',
-        'Preencha todos os campos.'
-      );
+      mostrarAviso('Atenção', 'Preencha todos os campos.');
       return;
     }
 
-    // A prioridade precisa ser um número inteiro positivo.
     const numeroPrioridade = Number(prioridade);
 
     if (
@@ -183,7 +178,6 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
-    // Remove a máscara antes de enviar o telefone para a API.
     const telefoneNumeros = telefone.replace(/\D/g, '');
 
     if (telefoneNumeros.length !== 11) {
@@ -194,19 +188,15 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
-    // Dados enviados ao servidor.
     const dados = {
       nome: nome.trim(),
       telefone: telefoneNumeros,
       relacao: relacao.trim(),
       prioridade: numeroPrioridade,
-      usuarioId: 1, // Usuário fictício de teste.
+      usuarioId: 1,
     };
 
-    // ==========================================================
-    // PUT - ATUALIZAR CONTATO EXISTENTE
-    // ==========================================================
-
+    // PUT - ATUALIZAR CONTATO
     if (editandoId !== null) {
       try {
         const resposta = await fetch(
@@ -226,7 +216,6 @@ export default function RedeApoio({ navigation }) {
 
         const contatoAtualizado = await resposta.json();
 
-        // Atualiza o contato na lista sem recarregar a tela.
         setContatos((anteriores) =>
           anteriores.map((contato) =>
             contato.id === editandoId
@@ -239,9 +228,8 @@ export default function RedeApoio({ navigation }) {
 
         mostrarAviso(
           'Sucesso',
-          'Contato atualizado e salvo na API!'
+          'Contato atualizado!'
         );
-
       } catch (erro) {
         console.error('Erro ao editar contato:', erro);
 
@@ -254,10 +242,7 @@ export default function RedeApoio({ navigation }) {
       return;
     }
 
-    // ==========================================================
-    // POST - CADASTRAR NOVO CONTATO
-    // ==========================================================
-
+    // POST - CADASTRAR CONTATO
     try {
       const resposta = await fetch(`${API_URL}/contatos`, {
         method: 'POST',
@@ -273,7 +258,6 @@ export default function RedeApoio({ navigation }) {
 
       const novoContato = await resposta.json();
 
-      // Inclui o novo contato na lista.
       setContatos((anteriores) => [
         ...anteriores,
         novoContato,
@@ -285,7 +269,6 @@ export default function RedeApoio({ navigation }) {
         'Sucesso',
         'Contato cadastrado com sucesso!'
       );
-
     } catch (erro) {
       console.error('Erro ao cadastrar contato:', erro);
 
@@ -296,11 +279,9 @@ export default function RedeApoio({ navigation }) {
     }
   }
 
-  // ============================================================
+  // =====================================================
   // EDITAR CONTATO
-  //
-  // Preenche o formulário com os dados do contato selecionado.
-  // ============================================================
+  // =====================================================
 
   function editarContato(contato) {
     setEditandoId(contato.id);
@@ -310,90 +291,64 @@ export default function RedeApoio({ navigation }) {
     setPrioridade(String(contato.prioridade));
   }
 
-  // ============================================================
-  // DELETE - EXCLUIR CONTATO NA API
-  //
-  // A exclusão acontece somente após a confirmação.
-  // ============================================================
+  // =====================================================
+  // DELETE - EXCLUIR CONTATO
+  // =====================================================
 
   function excluirContato(id) {
+    setContatoParaExcluir(id);
+  }
 
-    async function confirmarExclusao() {
-      try {
-        const resposta = await fetch(
-          `${API_URL}/contatos/${id}`,
-          {
-            method: 'DELETE',
-          }
-        );
+  async function confirmarExclusao() {
+    const id = contatoParaExcluir;
 
-        if (!resposta.ok) {
-          throw new Error('Não foi possível excluir o contato.');
+    if (id === null || excluindo) return;
+
+    setExcluindo(true);
+
+    try {
+      const resposta = await fetch(
+        `${API_URL}/contatos/${id}`,
+        {
+          method: 'DELETE',
         }
-
-        // Remove da lista após a confirmação do servidor.
-        setContatos((anteriores) =>
-          anteriores.filter(
-            (contato) => contato.id !== id
-          )
-        );
-
-        if (editandoId === id) {
-          limparFormulario();
-        }
-
-        mostrarAviso(
-          'Sucesso',
-          'Contato excluído com sucesso da API!'
-        );
-
-      } catch (erro) {
-        console.error('Erro ao excluir contato:', erro);
-
-        mostrarAviso(
-          'Erro',
-          'Não foi possível excluir o contato. Verifique se a API está funcionando.'
-        );
-      }
-    }
-
-    // Confirmação no navegador.
-    if (Platform.OS === 'web') {
-      const confirmou = window.confirm(
-        'Deseja realmente excluir este contato?'
       );
 
-      if (confirmou) {
-        confirmarExclusao();
+      if (!resposta.ok) {
+        throw new Error('Não foi possível excluir o contato.');
       }
 
-    } else {
-      // Confirmação no celular.
-      Alert.alert(
-        'Excluir contato',
-        'Deseja realmente excluir este contato?',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Excluir',
-            style: 'destructive',
-            onPress: confirmarExclusao,
-          },
-        ]
+      setContatos((anteriores) =>
+        anteriores.filter((contato) => contato.id !== id)
       );
+
+      if (editandoId === id) {
+        limparFormulario();
+      }
+
+      setContatoParaExcluir(null);
+
+      mostrarAviso(
+        'Sucesso',
+        'Contato excluído com sucesso!'
+      );
+    } catch (erro) {
+      setContatoParaExcluir(null);
+
+      console.error('Erro ao excluir contato:', erro);
+
+      mostrarAviso(
+        'Erro',
+        'Não foi possível excluir o contato. Verifique se a API está funcionando.'
+      );
+    } finally {
+      setExcluindo(false);
     }
   }
 
-  // ============================================================
-  // LIGAR PARA O CONTATO
-  //
-  // Utiliza Linking para abrir o discador do celular.
-  // O número é preenchido automaticamente.
-  // A ligação não é iniciada sem confirmação.
-  // ============================================================
+  // =====================================================
+  // LIGAR PARA CONTATO
+  // =====================================================
 
   async function ligarContato(numero) {
     const telefoneLimpo = String(numero || '')
@@ -409,7 +364,6 @@ export default function RedeApoio({ navigation }) {
 
     try {
       await Linking.openURL(`tel:${telefoneLimpo}`);
-
     } catch (erro) {
       console.error('Erro ao abrir o discador:', erro);
 
@@ -420,12 +374,9 @@ export default function RedeApoio({ navigation }) {
     }
   }
 
-  // ============================================================
+  // =====================================================
   // NAVEGAÇÃO
-  //
-  // Seta vermelha: retorna para a Área de Apoio.
-  // SAIR RÁPIDO: retorna para a tela inicial da pizzaria.
-  // ============================================================
+  // =====================================================
 
   function voltar() {
     navigation.navigate('Apoio');
@@ -435,22 +386,13 @@ export default function RedeApoio({ navigation }) {
     navigation.popToTop();
   }
 
-  // ============================================================
-  // CARTÃO DE CADA CONTATO
-  //
-  // Cada cartão mostra:
-  // - Prioridade
-  // - Nome
-  // - Relação
-  // - Telefone
-  // - Botão Ligar
-  // - Botões Editar e Excluir
-  // ============================================================
+  // =====================================================
+  // CARTÃO DE CONTATO
+  // =====================================================
 
   function renderizarContato({ item }) {
     return (
       <View style={estilos.cartao}>
-
         <Ionicons
           name="person-circle-outline"
           size={34}
@@ -479,7 +421,6 @@ export default function RedeApoio({ navigation }) {
           {formatarTelefone(item.telefone)}
         </Text>
 
-        {/* BOTÃO PARA LIGAR */}
         <TouchableOpacity
           style={estilos.botaoLigar}
           onPress={() => ligarContato(item.telefone)}
@@ -496,9 +437,7 @@ export default function RedeApoio({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        {/* BOTÕES EDITAR E EXCLUIR */}
         <View style={estilos.acoes}>
-
           <TouchableOpacity
             style={estilos.botaoEditar}
             onPress={() => editarContato(item)}
@@ -528,23 +467,17 @@ export default function RedeApoio({ navigation }) {
               Excluir
             </Text>
           </TouchableOpacity>
-
         </View>
       </View>
     );
   }
 
-  // ============================================================
+  // =====================================================
   // INTERFACE PRINCIPAL
-  //
-  // O FlatList apresenta os contatos em duas colunas.
-  // ListHeaderComponent contém o cabeçalho.
-  // ListFooterComponent contém o formulário e SAIR RÁPIDO.
-  // ============================================================
+  // =====================================================
 
   return (
     <SafeAreaView style={estilos.tela}>
-
       <FlatList
         data={contatosOrdenados}
         keyExtractor={(item) => String(item.id)}
@@ -554,13 +487,8 @@ export default function RedeApoio({ navigation }) {
         contentContainerStyle={estilos.conteudo}
         columnWrapperStyle={estilos.linhaContatos}
 
-        // ========================================================
-        // CABEÇALHO E TÍTULO DOS CONTATOS
-        // ========================================================
-
         ListHeaderComponent={
           <View>
-
             <View style={estilos.cabecalho}>
               <TouchableOpacity onPress={voltar}>
                 <Ionicons
@@ -582,13 +510,8 @@ export default function RedeApoio({ navigation }) {
             <Text style={estilos.subtitulo}>
               Meus contatos de confiança
             </Text>
-
           </View>
         }
-
-        // ========================================================
-        // MENSAGEM QUANDO NÃO EXISTEM CONTATOS
-        // ========================================================
 
         ListEmptyComponent={
           <Text style={estilos.vazio}>
@@ -596,13 +519,8 @@ export default function RedeApoio({ navigation }) {
           </Text>
         }
 
-        // ========================================================
-        // FORMULÁRIO ABAIXO DOS CONTATOS
-        // ========================================================
-
         ListFooterComponent={
           <View>
-
             <View style={estilos.separador} />
 
             <Text style={estilos.subtituloFormulario}>
@@ -611,7 +529,7 @@ export default function RedeApoio({ navigation }) {
                 : 'Cadastrar novo contato'}
             </Text>
 
-            {/* CAMPO NOME */}
+            {/* NOME */}
             <TextInput
               style={estilos.campo}
               placeholder="Nome do contato"
@@ -619,7 +537,7 @@ export default function RedeApoio({ navigation }) {
               onChangeText={setNome}
             />
 
-            {/* CAMPO TELEFONE COM MÁSCARA */}
+            {/* TELEFONE */}
             <TextInput
               style={estilos.campo}
               placeholder="Telefone"
@@ -631,7 +549,7 @@ export default function RedeApoio({ navigation }) {
               maxLength={15}
             />
 
-            {/* CAMPO RELAÇÃO */}
+            {/* RELAÇÃO */}
             <TextInput
               style={estilos.campo}
               placeholder="Relação (mãe, irmã, amiga...)"
@@ -639,7 +557,7 @@ export default function RedeApoio({ navigation }) {
               onChangeText={setRelacao}
             />
 
-            {/* CAMPO PRIORIDADE */}
+            {/* PRIORIDADE */}
             <TextInput
               style={estilos.campo}
               placeholder="Prioridade (1, 2, 3...)"
@@ -648,9 +566,8 @@ export default function RedeApoio({ navigation }) {
               keyboardType="number-pad"
             />
 
-            {/* BOTÃO MENOR E CENTRALIZADO */}
+            {/* CADASTRAR OU SALVAR */}
             <View style={estilos.areaBotaoCadastrar}>
-
               <TouchableOpacity
                 style={estilos.botaoCadastrar}
                 onPress={salvarContato}
@@ -671,7 +588,6 @@ export default function RedeApoio({ navigation }) {
                     : 'Cadastrar contato'}
                 </Text>
               </TouchableOpacity>
-
             </View>
 
             {/* CANCELAR EDIÇÃO */}
@@ -683,7 +599,7 @@ export default function RedeApoio({ navigation }) {
               </TouchableOpacity>
             )}
 
-            {/* BOTÃO SAIR RÁPIDO */}
+            {/* SAÍDA RÁPIDA */}
             <TouchableOpacity
               style={estilos.botaoSair}
               onPress={sairRapido}
@@ -698,19 +614,121 @@ export default function RedeApoio({ navigation }) {
                 SAIR RÁPIDO
               </Text>
             </TouchableOpacity>
-
           </View>
         }
       />
 
+      {/* ===============================================
+          MODAL DE SUCESSO, ERRO OU ATENÇÃO
+          =============================================== */}
+
+      <Modal
+        visible={modalAviso.visivel}
+        transparent
+        animationType="fade"
+        onRequestClose={fecharAviso}
+      >
+        <TouchableOpacity
+          activeOpacity={1}
+          style={estilos.modalFundo}
+          onPress={fecharAviso}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            style={estilos.modalCaixa}
+            onPress={() => {}}
+          >
+            <Ionicons
+              name={
+                modalAviso.titulo === 'Sucesso'
+                  ? 'checkmark-circle-outline'
+                  : 'alert-circle-outline'
+              }
+              size={54}
+              color={cores.vermelho}
+            />
+
+            <Text style={estilos.modalTitulo}>
+              {modalAviso.titulo}
+            </Text>
+
+            <Text style={estilos.modalMensagem}>
+              {modalAviso.mensagem}
+            </Text>
+
+            <TouchableOpacity
+              style={estilos.modalBotao}
+              onPress={fecharAviso}
+            >
+              <Text style={estilos.modalBotaoTexto}>
+                OK
+              </Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* ===============================================
+          MODAL DE CONFIRMAÇÃO DA EXCLUSÃO
+          =============================================== */}
+
+      <Modal
+        visible={contatoParaExcluir !== null}
+        transparent
+        animationType="fade"
+        onRequestClose={() => {
+          if (!excluindo) setContatoParaExcluir(null);
+        }}
+      >
+        <View style={estilos.modalFundo}>
+          <View style={estilos.modalCaixa}>
+            <Ionicons
+              name="trash-outline"
+              size={50}
+              color={cores.vermelho}
+            />
+
+            <Text style={estilos.modalTitulo}>
+              Excluir contato?
+            </Text>
+
+            <Text style={estilos.modalMensagem}>
+              Deseja realmente excluir este contato?
+            </Text>
+
+            <View style={estilos.modalBotoesLinha}>
+              <TouchableOpacity
+                style={estilos.modalBotaoCancelar}
+                disabled={excluindo}
+                onPress={() => setContatoParaExcluir(null)}
+              >
+                <Text style={estilos.modalCancelarTexto}>
+                  Cancelar
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={estilos.modalBotao}
+                disabled={excluindo}
+                onPress={confirmarExclusao}
+              >
+                <Text style={estilos.modalBotaoTexto}>
+                  {excluindo ? 'Excluindo...' : 'Excluir'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
 
-
+// =====================================================
+// ESTILOS
+// =====================================================
 
 const estilos = StyleSheet.create({
-
   tela: {
     flex: 1,
     backgroundColor: cores.fundo,
@@ -747,7 +765,6 @@ const estilos = StyleSheet.create({
     marginBottom: 15,
   },
 
-  // Organiza os cartões lado a lado.
   linhaContatos: {
     justifyContent: 'space-between',
     gap: 10,
@@ -765,7 +782,6 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
   },
 
-  
   iconeContato: {
     marginBottom: 4,
   },
@@ -897,7 +913,6 @@ const estilos = StyleSheet.create({
     marginBottom: 20,
   },
 
-  // Botão grande para retornar rapidamente à pizzaria.
   botaoSair: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -909,4 +924,81 @@ const estilos = StyleSheet.create({
     marginTop: 28,
   },
 
+  // =====================================================
+  // ESTILOS DOS MODAIS
+  // =====================================================
+
+  modalFundo: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+
+  modalCaixa: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: cores.fundo,
+    borderRadius: 20,
+    padding: 25,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: cores.vermelho,
+  },
+
+  modalTitulo: {
+    color: cores.vermelho,
+    fontSize: 21,
+    fontWeight: 'bold',
+    marginTop: 10,
+    textAlign: 'center',
+  },
+
+  modalMensagem: {
+    color: cores.texto,
+    fontSize: 15,
+    textAlign: 'center',
+    marginTop: 12,
+    marginBottom: 22,
+    lineHeight: 22,
+  },
+
+  modalBotao: {
+    backgroundColor: cores.vermelho,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 90,
+  },
+
+  modalBotaoTexto: {
+    color: cores.branco,
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+
+  modalBotoesLinha: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+  },
+
+  modalBotaoCancelar: {
+    borderWidth: 1,
+    borderColor: cores.vermelho,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    alignItems: 'center',
+  },
+
+  modalCancelarTexto: {
+    color: cores.vermelho,
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
 });

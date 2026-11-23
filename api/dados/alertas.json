@@ -106,5 +106,41 @@
     "latitude": -23.285956417683206,
     "longitude": -51.259658760872995,
     "status": "Novo"
+  },
+  {
+    "id": 13,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-23T00:15:00.552Z",
+    "latitude": -23.294684904044008,
+    "longitude": -51.26017712644828,
+    "status": "Novo"
+  },
+  {
+    "id": 14,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-23T00:15:20.002Z",
+    "latitude": -23.294684904044008,
+    "longitude": -51.26017712644828,
+    "status": "Novo"
+  },
+  {
+    "id": 15,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-23T00:21:49.752Z",
+    "latitude": -23.294684904044008,
+    "longitude": -51.26017712644828,
+    "status": "Novo"
+  },
+  {
+    "id": 16,
+    "usuarioId": 1,
+    "nomeUsuario": "Usuario Teste",
+    "dataHora": "2026-11-23T00:22:05.807Z",
+    "latitude": -23.294684904044008,
+    "longitude": -51.26017712644828,
+    "status": "Novo"
   }
 ]

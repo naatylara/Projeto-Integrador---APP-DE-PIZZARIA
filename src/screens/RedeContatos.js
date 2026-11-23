@@ -40,7 +40,7 @@ export default function RedeApoio({ navigation }) {
   const [prioridade, setPrioridade] = useState('');
   const [editandoId, setEditandoId] = useState(null);
 
-  // Estados dos modais personalizados
+  // Estados dos modais
   const [modalAviso, setModalAviso] = useState({
     visivel: false,
     titulo: '',

@@ -131,7 +131,6 @@ export default function RedeApoio({ navigation }) {
 
   // =====================================================
   // MODAL PERSONALIZADO DE AVISOS
-  // Substitui window.alert e Alert.alert
   // =====================================================
 
   function mostrarAviso(titulo, mensagem) {

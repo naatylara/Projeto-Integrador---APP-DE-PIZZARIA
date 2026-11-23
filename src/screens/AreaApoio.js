@@ -203,7 +203,7 @@ export default function AreaApoio({ navigation }) {
           </Text>
 
           <Text style={estilos.sosDescricao}>
-            Registrar alerta com localização (simulação)
+            Registrar alerta com localização 
           </Text>
         </TouchableOpacity>
 
@@ -290,9 +290,19 @@ export default function AreaApoio({ navigation }) {
         animationType="fade"
         onRequestClose={() => setModalSucesso(false)}
       >
-        <View style={estilos.modalFundo}>
-          <View style={estilos.modalConteudo}>
-
+        {/* Tocar fora da janela fecha o modal */}
+        <TouchableOpacity
+          style={estilos.modalFundo}
+          activeOpacity={1}
+          onPress={() => setModalSucesso(false)}
+          accessibilityLabel="Fechar confirmação do alerta"
+        >
+          {/* Tocar dentro da janela também fecha o modal */}
+          <TouchableOpacity
+            style={estilos.modalConteudo}
+            activeOpacity={1}
+            onPress={() => setModalSucesso(false)}
+          >
             <Ionicons
               name="checkmark-circle"
               size={72}
@@ -307,25 +317,10 @@ export default function AreaApoio({ navigation }) {
               Seu alerta SOS nº {numeroAlerta} foi registrado
               com sucesso no painel demonstrativo.
             </Text>
-
-            <Text style={estilos.modalObservacao}>
-              Este é um protótipo acadêmico.
-              O alerta não aciona automaticamente
-              serviços de emergência.
-            </Text>
-
-            <TouchableOpacity
-              style={estilos.modalBotao}
-              onPress={() => setModalSucesso(false)}
-            >
-              <Text style={estilos.modalBotaoTexto}>
-                ENTENDI
-              </Text>
-            </TouchableOpacity>
-
-          </View>
-        </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </Modal>
+
     </SafeAreaView>
   );
 }
